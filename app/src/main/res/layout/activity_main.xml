@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Root layout containing all views in the activity -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <!-- Toolbar for the app -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:elevation="18dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:titleTextAppearance="@style/TextAppearance.Material3.TitleLarge"
+        app:titleTextColor="@color/black"/>
+
+    <!-- FrameLayout containing a View for the shadow effect below the Toolbar -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <!-- View to simulate a shadow under the Toolbar -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@drawable/toolbar_background" />
+    </FrameLayout>
+
+    <!-- ScrollView to make content scrollable -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
+
+        <!-- LinearLayout to hold the scrollable content -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- ImageView displaying a background image -->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="450dp"
+                android:layout_marginTop="60dp"
+                android:src="@drawable/welcome_background"/>
+
+            <!-- TextView displaying the "Hooray!" text -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/greeting_text_heading"
+                android:textAlignment="center"
+                android:textColor="@android:color/holo_orange_dark"
+                android:textSize="24sp"
+                android:textStyle="bold"/>
+
+            <!-- TextView displaying additional welcome text -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/greeting_text"
+                android:textAlignment="center"
+                android:layout_marginHorizontal="50dp"
+                android:textSize="14sp"/>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
