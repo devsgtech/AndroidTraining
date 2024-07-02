@@ -26,14 +26,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
         // Setting the title for the app bar
         getSupportActionBar().setTitle(R.string.toolbar_heading);
-        // Setting a listener to apply window insets to the view with ID 'main'
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            // Getting the system bar insets (e.g., status bar and navigation bar)
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            // Setting the padding of the view to match the system bar insets
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            // Returning the insets to be applied to the view
-            return insets;
-        });
+
     }
 }
