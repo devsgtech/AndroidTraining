@@ -28,11 +28,6 @@ public class RegisterPage extends AppCompatActivity {
         // Setting the content view to the register page layout
         setContentView(R.layout.activity_register_page);
 
-        // Making the status bar transparent for devices running KitKat (API 19) or higher
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getWindow();
-            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
 
         // Logging a message to indicate that the Register page has been created
         Log.d(TAG, "onCreate: Welcome to Register page");
