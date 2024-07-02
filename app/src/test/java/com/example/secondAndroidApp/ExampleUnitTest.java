@@ -1,4 +1,4 @@
-package com.example.firstandroidapp;
+package com.example.secondAndroidApp;
 
 import org.junit.Test;
 

@@ -1,6 +1,12 @@
 <resources>
-    <string name="app_name">Welcome app</string>
+    <string name="app_name">SecondAndroidTask</string>
+    <string name="registration_heading_text">Register</string>
+    <string name="registration_subheading_text">Create your new account</string>
+    <string name="continue_button">continue</string>
     <string name="toolbar_heading">Greetings, Developer!</string>
     <string name="greeting_text_heading">We\'re excited to have you here!</string>
     <string name="greeting_text">This app is crafted to teach you the fundamentals and get you comfortable with building mobile applications using Ionic.</string>
+    <string name="first_name_hint">First Name</string>
+    <string name="last_name_hint">Last Name</string>
+    <string name="email_address_hint">Email Address</string>
 </resources>

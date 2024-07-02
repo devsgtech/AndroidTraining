@@ -1,0 +1,71 @@
+// Package declaration, defining the package name for this class
+package com.example.secondAndroidApp;
+
+// Import statements to include necessary Android and Java classes
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle; // Importing the Bundle class used to pass data between activities
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.TextView;
+
+import androidx.appcompat.widget.Toolbar; // Importing the Toolbar widget for app bar
+import androidx.appcompat.app.AppCompatActivity; // Importing AppCompatActivity class for compatibility support
+import androidx.core.graphics.Insets; // Importing the Insets class for handling window insets
+import androidx.core.view.ViewCompat; // Importing the ViewCompat class for view compatibility
+import androidx.core.view.WindowInsetsCompat; // Importing the WindowInsetsCompat class for window insets compatibility
+
+import com.example.firstandroidapp.R;
+
+// Main activity class declaration, extending AppCompatActivity to use support library features
+public class MainActivity extends AppCompatActivity {
+
+    // Overriding the onCreate method which is called when the activity is created
+    // Declaration of the TextView for the continue button
+    private TextView countineToRegisterPage;
+    // Intent to start the RegisterPage activity
+    Intent intent;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // Setting the content view to the welcome page layout
+        setContentView(R.layout.activity_main);
+
+        // Making the status bar transparent for devices running KitKat (API 19) or higher
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window w = getWindow();
+            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        }
+        // Initializing UI components
+        init();
+        // Setting up the click listener for the continue button
+        goToRegisterPage();
+    }
+
+    // Method to initialize UI components
+    protected void init() {
+        // Finding the Toolbar view by its ID and assigning it to the myToolbar variable
+        Toolbar myToolbar = findViewById(R.id.my_toolbar);
+        // Setting the Toolbar as the app bar for the activity
+        setSupportActionBar(myToolbar);
+        // Setting the title for the app bar
+        getSupportActionBar().setTitle(R.string.toolbar_heading);
+        // Finding the continue button TextView by its ID
+        countineToRegisterPage = findViewById(R.id.countineToRegisterPage);
+    }
+
+    // Method to set up the click listener for the continue button
+    protected void goToRegisterPage() {
+        countineToRegisterPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Creating an intent to start the RegisterPage activity
+                intent = new Intent(MainActivity.this, RegisterPage.class);
+                // Starting the RegisterPage activity
+                startActivity(intent);
+            }
+        });
+    }
+}
