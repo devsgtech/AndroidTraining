@@ -1,10 +1,14 @@
 package com.example.thirdAndroidApp;
 
+import android.content.Context;
+import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -56,15 +60,17 @@ public class RegisterPage extends AppCompatActivity {
         btnRegister = findViewById(R.id.btnRegister);
     }
 
-    // Method to clear input fields and remove the focus from them
+    // Method to clear input fields and remove the cursor blinking from them
     private void clearFields() {
         fnameEditText.setText("");
-        fnameEditText.setFocusable(false);
+        fnameEditText.setCursorVisible(false);
         lnameEditText.setText("");
-        lnameEditText.setFocusable(false);
+        lnameEditText.setCursorVisible(false);
         emailEditText.setText("");
-        emailEditText.setFocusable(false);
-    }
+        emailEditText.setCursorVisible(false);
+        //To Hide the keyboard on the click of the button
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(btnRegister.getWindowToken(),0);}
 
     // Method to validate user inputs
     private boolean validateInputs(View v) {
@@ -102,6 +108,7 @@ public class RegisterPage extends AppCompatActivity {
         fnameEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                fnameEditText.setCursorVisible(true);
             }
 
             @Override
@@ -111,7 +118,22 @@ public class RegisterPage extends AppCompatActivity {
             }
 
             @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        lnameEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                lnameEditText.setCursorVisible(true);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
             public void afterTextChanged(Editable s) {
+
             }
         });
 
@@ -119,6 +141,7 @@ public class RegisterPage extends AppCompatActivity {
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                emailEditText.setCursorVisible(true);
             }
 
             @Override
