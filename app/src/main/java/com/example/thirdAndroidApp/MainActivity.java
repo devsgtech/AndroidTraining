@@ -1,7 +1,8 @@
 // Package declaration, defining the package name for this class
-package com.example.secondAndroidApp;
+package com.example.thirdAndroidApp;
 
 // Import statements to include necessary Android and Java classes
+
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle; // Importing the Bundle class used to pass data between activities
@@ -12,9 +13,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar; // Importing the Toolbar widget for app bar
 import androidx.appcompat.app.AppCompatActivity; // Importing AppCompatActivity class for compatibility support
-import androidx.core.graphics.Insets; // Importing the Insets class for handling window insets
-import androidx.core.view.ViewCompat; // Importing the ViewCompat class for view compatibility
-import androidx.core.view.WindowInsetsCompat; // Importing the WindowInsetsCompat class for window insets compatibility
 
 import com.example.firstandroidapp.R;
 
@@ -32,12 +30,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         // Setting the content view to the welcome page layout
         setContentView(R.layout.activity_main);
-
-        // Making the status bar transparent for devices running KitKat (API 19) or higher
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getWindow();
-            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
         // Initializing UI components
         init();
         // Setting up the click listener for the continue button

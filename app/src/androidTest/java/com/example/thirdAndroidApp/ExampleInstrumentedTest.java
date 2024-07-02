@@ -1,4 +1,4 @@
-package com.example.secondAndroidApp;
+package com.example.thirdAndroidApp;
 
 import android.content.Context;
 

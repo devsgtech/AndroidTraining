@@ -9,7 +9,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:fitsSystemWindows="true"
-    tools:context="com.example.secondandroidtask.pages.RegisterPage">
+    tools:context="com.example.thirdAndroidApp.RegisterPage">
 
     <!-- Main container LinearLayout for the page content -->
     <LinearLayout
@@ -76,7 +76,8 @@
                     android:id="@+id/fname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:textColor="@color/black" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- TextInputLayout for last name input field -->
@@ -94,7 +95,8 @@
                     android:id="@+id/lname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:textColor="@color/black" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- TextInputLayout for email address input field -->
@@ -112,7 +114,8 @@
                     android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress" />
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/black" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Button for submitting the registration form -->
@@ -126,5 +129,6 @@
                 android:text="@string/registration_heading_text"
                 android:textColor="@color/white" />
         </LinearLayout>
+
     </LinearLayout>
 </ScrollView>
