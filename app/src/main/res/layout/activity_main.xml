@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:fitsSystemWindows="true"
-    tools:context="com.example.thirdAndroidApp.MainActivity">
+    tools:context="com.example.fourthAndroidApp.MainActivity">
 
     <!-- Toolbar for the app -->
     <androidx.appcompat.widget.Toolbar

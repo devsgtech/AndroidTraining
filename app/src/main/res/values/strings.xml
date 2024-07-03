@@ -1,12 +1,53 @@
 <resources>
+    <!-- Application name -->
     <string name="app_name">ThirdAndroidTask</string>
+
+    <!-- Heading text for the registration page -->
     <string name="registration_heading_text">Register</string>
+
+    <!-- Subheading text for the registration page -->
     <string name="registration_subheading_text">Create your new account</string>
+
+    <!-- Text for the continue button -->
     <string name="continue_button">continue</string>
+
+    <!-- Text for the toolbar heading -->
     <string name="toolbar_heading">Greetings, Developer !</string>
+
+    <!-- Heading text for the greeting message -->
     <string name="greeting_text_heading">We\'re excited to have you here!</string>
+
+    <!-- Main greeting text -->
     <string name="greeting_text">This app is crafted to teach you the fundamentals and get you comfortable with building mobile applications using Native Android .</string>
+
+    <!-- Hint text for the first name input field -->
     <string name="first_name_hint">First Name</string>
+
+    <!-- Hint text for the last name input field -->
     <string name="last_name_hint">Last Name</string>
+
+    <!-- Hint text for the email address input field -->
     <string name="email_address_hint">Email Address</string>
+
+    <!-- Text for the terms and conditions checkbox -->
+    <string name="checkbox_text">I agree to the terms and conditions.</string>
+
+    <!-- Error message for gender selection validation -->
+    <string name="gender_selection">Gender is required</string>
+
+    <!-- Array of country names for the spinner -->
+    <string-array name="country_list">
+        <!-- Default item for the spinner -->
+        <item>Select Country</item>
+        <!-- Australia option for the spinner -->
+        <item>Australia</item>
+        <!-- India option for the spinner -->
+        <item>India</item>
+        <!-- Japan option for the spinner -->
+        <item>Japan</item>
+        <!-- United Kingdom option for the spinner -->
+        <item>United Kingdom</item>
+        <!-- United States of America option for the spinner -->
+        <item>United States of America</item>
+    </string-array>
 </resources>

@@ -9,7 +9,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:fitsSystemWindows="true"
-    tools:context="com.example.thirdAndroidApp.RegisterPage">
+    tools:context="com.example.fourthAndroidApp.RegisterPage">
 
     <!-- Main container LinearLayout for the page content -->
     <LinearLayout
@@ -24,14 +24,13 @@
             android:layout_height="285dp">
 
             <!-- ImageView for the background image -->
-
-            <!-- TextView for the "Register" title -->
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:src="@drawable/register_background" />
 
+            <!-- TextView for the "Register" title -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -117,6 +116,94 @@
                     android:inputType="textEmailAddress"
                     android:textColor="@color/black" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Dropdown for the country selection -->
+            <Spinner
+                android:id="@+id/countryDropdownSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Select country"
+                android:layout_marginTop="-2dp"
+                android:layout_marginLeft="8dp"
+                />
+
+            <!-- Added this view for the bottom of the Spinner -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray" />
+
+            <!-- Radio group code -->
+            <RadioGroup
+                android:id="@+id/genderRadioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="15dp"
+                android:layout_marginHorizontal="15dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/gender"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:text="Gender :">
+                </TextView>
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Male"
+                    android:id="@+id/maleRadioButton"
+                    android:layout_weight="1"
+                    app:buttonTint="@android:color/holo_orange_dark"
+                    android:checked="false" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="female"
+                    android:layout_weight="1"
+                    android:id="@+id/femaleRadioButton"
+                    app:buttonTint="@android:color/holo_orange_dark"
+                    android:checked="false" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Others"
+                    android:id="@+id/othersRadioButton"
+                    android:layout_weight="1"
+                    app:buttonTint="@android:color/holo_orange_dark"
+                    android:checked="false" />
+            </RadioGroup>
+
+            <!-- Added this view for the bottom of the Gender Selection -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray" />
+
+            <!-- Textview for the error in the Gender Selection -->
+            <TextView
+                android:id="@+id/radioButtonErrorTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginTop="2dp"
+                android:textAlignment="viewStart"
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="13sp"
+                />
+
+            <!-- For the Check Box -->
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/termsCheckbox"
+                android:layout_marginLeft="6dp"
+                android:text="@string/checkbox_text" />
 
             <!-- Button for submitting the registration form -->
             <androidx.appcompat.widget.AppCompatButton

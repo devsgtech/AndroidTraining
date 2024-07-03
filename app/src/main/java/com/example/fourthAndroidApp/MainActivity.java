@@ -1,14 +1,11 @@
 // Package declaration, defining the package name for this class
-package com.example.thirdAndroidApp;
+package com.example.fourthAndroidApp;
 
 // Import statements to include necessary Android and Java classes
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle; // Importing the Bundle class used to pass data between activities
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar; // Importing the Toolbar widget for app bar

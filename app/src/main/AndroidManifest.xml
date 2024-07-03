@@ -13,10 +13,10 @@
         android:theme="@style/Theme.FirstAndroidApp"
         tools:targetApi="31">
         <activity
-            android:name="com.example.thirdAndroidApp.RegisterPage"
+            android:name="com.example.fourthAndroidApp.RegisterPage"
             android:exported="false" />
         <activity
-            android:name="com.example.thirdAndroidApp.MainActivity"
+            android:name="com.example.fourthAndroidApp.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
