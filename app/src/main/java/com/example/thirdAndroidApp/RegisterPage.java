@@ -88,7 +88,7 @@ public class RegisterPage extends AppCompatActivity {
 
         // Validate email address
         if (email.isEmpty()) {
-            emailLayout.setError("Email is required");
+            emailLayout.setError("Email Address is required");
             isValid = false;
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailLayout.setError("Please enter a valid email address");
