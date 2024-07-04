@@ -92,7 +92,7 @@ public class RegisterPage extends AppCompatActivity {
             isValid = false;
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailLayout.setError("Please enter a valid email address");
-            Utility.displayErrorSnackbar(v, "Invalid Email Address.", RegisterPage.this);
+//            Utility.displayErrorSnackbar(v, "Invalid Email Address.", RegisterPage.this);
             isValid = false;
         } else {
             emailLayout.setError(null);
