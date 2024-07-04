@@ -34,6 +34,7 @@ public class RegisterPage extends AppCompatActivity {
     private RadioButton maleRadioButton, femaleRadioButton, othersRadioButton;
     private CheckBox termsCheckbox;
     private TextView radioButtonErrorTextView;
+    private View genderRadioGroupBottomView;
     private ArrayAdapter<String> adapter;
 
     @Override
@@ -72,6 +73,7 @@ public class RegisterPage extends AppCompatActivity {
         othersRadioButton = findViewById(R.id.othersRadioButton);
         termsCheckbox = findViewById(R.id.termsCheckbox);
         radioButtonErrorTextView = findViewById(R.id.radioButtonErrorTextView);
+        genderRadioGroupBottomView =findViewById(R.id.genderRadioGroupBottomView);
 
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -102,6 +104,7 @@ public class RegisterPage extends AppCompatActivity {
             isValid = true;
         } else {
             radioButtonErrorTextView.setText(R.string.gender_selection);
+            genderRadioGroupBottomView.setBackgroundColor(getResources().getColor(R.color.faliure));
             isValid = false;
         }
 
@@ -111,7 +114,7 @@ public class RegisterPage extends AppCompatActivity {
             isValid = false;
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailLayout.setError("Please enter a valid email address");
-            Utility.displayErrorSnackbar(v, "Invalid Email Address", RegisterPage.this);
+//            Utility.displayErrorSnackbar(v, "Invalid Email Address", RegisterPage.this);
             isValid = false;
         } else {
             emailLayout.setError(null);
@@ -188,15 +191,19 @@ public class RegisterPage extends AppCompatActivity {
                 switch (checkedId) {
                     case (R.id.maleRadioButton):
                         radioButtonErrorTextView.setText("");
+                        genderRadioGroupBottomView.setBackgroundColor(getResources().getColor(R.color.black));
                         break;
                     case (R.id.femaleRadioButton):
                         radioButtonErrorTextView.setText("");
+                        genderRadioGroupBottomView.setBackgroundColor(getResources().getColor(R.color.black));
                         break;
                     case (R.id.othersRadioButton):
                         radioButtonErrorTextView.setText("");
+                        genderRadioGroupBottomView.setBackgroundColor(getResources().getColor(R.color.black));
                         break;
                     default:
                         radioButtonErrorTextView.setText("");
+                        genderRadioGroupBottomView.setBackgroundColor(getResources().getColor(R.color.black));
                 }
             }
         });

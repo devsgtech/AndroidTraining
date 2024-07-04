@@ -181,6 +181,7 @@
 
             <!-- Added this view for the bottom of the Gender Selection -->
             <View
+                android:id="@+id/genderRadioGroupBottomView"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@android:color/darker_gray" />
