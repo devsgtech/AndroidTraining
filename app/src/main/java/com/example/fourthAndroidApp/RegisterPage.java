@@ -1,9 +1,12 @@
 package com.example.fourthAndroidApp;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -35,6 +38,11 @@ public class RegisterPage extends AppCompatActivity {
     private CheckBox termsCheckbox;
     private TextView radioButtonErrorTextView;
     private View genderRadioGroupBottomView;
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
+    private TextView countryview;
+    Intent intent;
+    private static final String SHARED_PREF_NAME = "login_details";
     private ArrayAdapter<String> adapter;
 
     @Override
@@ -75,6 +83,10 @@ public class RegisterPage extends AppCompatActivity {
         radioButtonErrorTextView = findViewById(R.id.radioButtonErrorTextView);
         genderRadioGroupBottomView =findViewById(R.id.genderRadioGroupBottomView);
 
+        //shared prefrence declarations
+        pref=getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        editor=pref.edit();
+
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.country_list, android.R.layout.simple_spinner_item);
@@ -102,6 +114,7 @@ public class RegisterPage extends AppCompatActivity {
         // Validate gender selection
         if (maleRadioButton.isChecked() || femaleRadioButton.isChecked() || othersRadioButton.isChecked()) {
             isValid = true;
+
         } else {
             radioButtonErrorTextView.setText(R.string.gender_selection);
             genderRadioGroupBottomView.setBackgroundColor(getResources().getColor(R.color.faliure));
@@ -217,7 +230,10 @@ public class RegisterPage extends AppCompatActivity {
                 // Validate inputs when register button is clicked
                 if (validateInputs(v)) {
                     // If inputs are valid, show success message and clear fields
-                    Utility.displaySuccessSnackbar(v, "Registered Successfully", RegisterPage.this);
+                    setData();
+                    intent = new Intent(RegisterPage.this, ShowDetails.class);
+                    startActivity(intent);
+//                    Utility.displaySuccessSnackbar(v, "Registered Successfully", RegisterPage.this);
                     clearFields();
                 }
             }
@@ -240,6 +256,29 @@ public class RegisterPage extends AppCompatActivity {
         // Hide the keyboard on the click of the button
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(btnRegister.getWindowToken(), 0);
+    }
+
+    private void setData(){
+        editor.putString("fname",fnameEditText.getText().toString());
+        editor.putString("lname",lnameEditText.getText().toString());
+        editor.putString("email",emailEditText.getText().toString());
+        editor.putString("genderMale",maleRadioButton.getText().toString());
+        editor.putString("genderFemale",femaleRadioButton.getText().toString());
+        editor.putString("genderOthers",othersRadioButton.getText().toString());
+        editor.putString("country",countryDropdownSpinner.getSelectedItem().toString());
+//        editor.putString("gender",male.getText().toString());
+        editor.commit();
+    }
+
+    private void getData(){
+        String fn=pref.getString("fname",null);
+        String ln=pref.getString("lname",null);
+        String em=pref.getString("email",null);
+//        String gen=pref.getString("gender",null);
+        String coun=pref.getString("country",null);
+        if(fn!=null && ln!=null && em!=null  && coun!=null){
+//          Log.d("First name"+fn);
+        }
     }
 
 }
