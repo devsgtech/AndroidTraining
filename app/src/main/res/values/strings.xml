@@ -28,12 +28,18 @@
 
     <!-- Hint text for the email address input field -->
     <string name="email_address_hint">Email Address</string>
+    <string name="select_gender_heading">Select Gender</string>
 
     <!-- Text for the terms and conditions checkbox -->
     <string name="checkbox_text">I agree to the terms and conditions.</string>
 
     <!-- Error message for gender selection validation -->
     <string name="gender_selection">Gender is required</string>
+
+    <!-- Error message for gender selection validation -->
+    <string name="agree_terms">Please agree to the Terms and Conditions</string>
+
+
 
     <!-- Array of country names for the spinner -->
     <string-array name="country_list">
@@ -50,4 +56,5 @@
         <!-- United States of America option for the spinner -->
         <item>United States of America</item>
     </string-array>
+
 </resources>
