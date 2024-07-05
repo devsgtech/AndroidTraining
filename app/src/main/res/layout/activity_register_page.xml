@@ -122,10 +122,9 @@
                 android:id="@+id/countryDropdownSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:hint="Select country"
-                android:layout_marginTop="-2dp"
                 android:layout_marginLeft="8dp"
-                />
+                android:layout_marginTop="-2dp"
+                android:hint="Select country" />
 
             <!-- Added this view for the bottom of the Spinner -->
             <View
@@ -133,51 +132,60 @@
                 android:layout_height="1dp"
                 android:background="@android:color/darker_gray" />
 
-            <!-- Radio group code -->
-            <RadioGroup
-                android:id="@+id/genderRadioGroup"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="15dp"
-                android:layout_marginHorizontal="15dp">
+                android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/genderHeading"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/gender"
+                    android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:textSize="16sp"
-                    android:text="Gender :">
-                </TextView>
+                    android:text="@string/select_gender_heading"
+                    android:layout_marginHorizontal="15dp"
+                    android:layout_marginTop="15dp"
+                    android:textSize="16sp"/>
 
-                <RadioButton
-                    android:layout_width="wrap_content"
+                <!-- Radio group code -->
+                <RadioGroup
+                    android:id="@+id/genderRadioGroup"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Male"
-                    android:id="@+id/maleRadioButton"
-                    android:layout_weight="1"
-                    app:buttonTint="@android:color/holo_orange_dark"
-                    android:checked="false" />
+                    android:layout_marginHorizontal="15dp"
+                    android:orientation="horizontal">
 
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="female"
-                    android:layout_weight="1"
-                    android:id="@+id/femaleRadioButton"
-                    app:buttonTint="@android:color/holo_orange_dark"
-                    android:checked="false" />
+                    <RadioButton
+                        android:id="@+id/maleRadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:checked="false"
+                        android:text="Male"
+                        app:buttonTint="@android:color/holo_orange_dark" />
 
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Others"
-                    android:id="@+id/othersRadioButton"
-                    android:layout_weight="1"
-                    app:buttonTint="@android:color/holo_orange_dark"
-                    android:checked="false" />
-            </RadioGroup>
+                    <RadioButton
+                        android:id="@+id/femaleRadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:checked="false"
+                        android:text="female"
+                        app:buttonTint="@android:color/holo_orange_dark" />
+
+                    <RadioButton
+                        android:id="@+id/othersRadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:checked="false"
+                        android:text="Others"
+                        app:buttonTint="@android:color/holo_orange_dark" />
+
+                </RadioGroup>
+
+            </LinearLayout>
+
 
             <!-- Added this view for the bottom of the Gender Selection -->
             <View
@@ -195,16 +203,25 @@
                 android:layout_marginTop="2dp"
                 android:textAlignment="viewStart"
                 android:textColor="@android:color/holo_red_dark"
-                android:textSize="13sp"
-                />
+                android:textSize="13sp" />
 
             <!-- For the Check Box -->
             <CheckBox
+                android:id="@+id/termsCheckbox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/termsCheckbox"
                 android:layout_marginLeft="6dp"
                 android:text="@string/checkbox_text" />
+
+            <!-- Textview for the error in the Gender Selection -->
+            <TextView
+                android:id="@+id/agreeTermsErrorTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:textAlignment="viewStart"
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="13sp" />
 
             <!-- Button for submitting the registration form -->
             <androidx.appcompat.widget.AppCompatButton

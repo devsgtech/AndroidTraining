@@ -1,23 +1,25 @@
 package com.example.fourthAndroidApp;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
 import com.example.firstandroidapp.R;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -29,20 +31,16 @@ public class RegisterPage extends AppCompatActivity {
     // Flag to track input validation status
     private boolean isValid;
     // Views and Widgets
-    private TextInputLayout fnameLayout, emailLayout, lnameLayout;
+    private TextInputLayout fnameLayout, emailLayout;
     private TextInputEditText fnameEditText, lnameEditText, emailEditText;
     private Button btnRegister;
     private Spinner countryDropdownSpinner;
     private RadioGroup genderRadioGroup;
     private RadioButton maleRadioButton, femaleRadioButton, othersRadioButton;
     private CheckBox termsCheckbox;
+    private TextView genderHeading;
     private TextView radioButtonErrorTextView;
-    private View genderRadioGroupBottomView;
-    private SharedPreferences pref;
-    private SharedPreferences.Editor editor;
-    private TextView countryview;
-    Intent intent;
-    private static final String SHARED_PREF_NAME = "login_details";
+    private TextView agreeTermsErrorTextView;
     private ArrayAdapter<String> adapter;
 
     @Override
@@ -68,7 +66,6 @@ public class RegisterPage extends AppCompatActivity {
     private void init() {
         // Link the variables to the views in the layout
         fnameLayout = findViewById(R.id.fnameLayout);
-        lnameLayout = findViewById(R.id.lnameLayout);
         emailLayout = findViewById(R.id.emailLayout);
         fnameEditText = findViewById(R.id.fname);
         lnameEditText = findViewById(R.id.lname);
@@ -81,12 +78,8 @@ public class RegisterPage extends AppCompatActivity {
         othersRadioButton = findViewById(R.id.othersRadioButton);
         termsCheckbox = findViewById(R.id.termsCheckbox);
         radioButtonErrorTextView = findViewById(R.id.radioButtonErrorTextView);
-        genderRadioGroupBottomView =findViewById(R.id.genderRadioGroupBottomView);
-
-        //shared prefrence declarations
-        pref=getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        editor=pref.edit();
-
+        agreeTermsErrorTextView = findViewById(R.id.agreeTermsErrorTextView);
+        genderHeading = findViewById(R.id.genderHeading);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.country_list, android.R.layout.simple_spinner_item);
@@ -114,10 +107,9 @@ public class RegisterPage extends AppCompatActivity {
         // Validate gender selection
         if (maleRadioButton.isChecked() || femaleRadioButton.isChecked() || othersRadioButton.isChecked()) {
             isValid = true;
-
         } else {
             radioButtonErrorTextView.setText(R.string.gender_selection);
-            genderRadioGroupBottomView.setBackgroundColor(getResources().getColor(R.color.faliure));
+            genderHeading.setTextColor(ContextCompat.getColor(this, R.color.faliure));
             isValid = false;
         }
 
@@ -127,7 +119,6 @@ public class RegisterPage extends AppCompatActivity {
             isValid = false;
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailLayout.setError("Please enter a valid email address");
-//            Utility.displayErrorSnackbar(v, "Invalid Email Address", RegisterPage.this);
             isValid = false;
         } else {
             emailLayout.setError(null);
@@ -137,8 +128,7 @@ public class RegisterPage extends AppCompatActivity {
         // Validate terms and conditions checkbox
         if (!termsCheckbox.isChecked()) {
             isValid = false;
-            // Delay showing the snackbar to avoid overlap with other error messages
-            v.postDelayed(() -> Utility.displayErrorSnackbar(v, "Please agree to terms and condition", RegisterPage.this), 500);
+            agreeTermsErrorTextView.setText(R.string.agree_terms);
         }
 
         return isValid;
@@ -204,22 +194,32 @@ public class RegisterPage extends AppCompatActivity {
                 switch (checkedId) {
                     case (R.id.maleRadioButton):
                         radioButtonErrorTextView.setText("");
-                        genderRadioGroupBottomView.setBackgroundColor(getResources().getColor(R.color.black));
+                        genderHeading.setTextColor(ContextCompat.getColor(RegisterPage.this, R.color.black));
                         break;
                     case (R.id.femaleRadioButton):
                         radioButtonErrorTextView.setText("");
-                        genderRadioGroupBottomView.setBackgroundColor(getResources().getColor(R.color.black));
+                        genderHeading.setTextColor(ContextCompat.getColor(RegisterPage.this, R.color.black));
                         break;
                     case (R.id.othersRadioButton):
                         radioButtonErrorTextView.setText("");
-                        genderRadioGroupBottomView.setBackgroundColor(getResources().getColor(R.color.black));
+                        genderHeading.setTextColor(ContextCompat.getColor(RegisterPage.this, R.color.black));
                         break;
                     default:
                         radioButtonErrorTextView.setText("");
-                        genderRadioGroupBottomView.setBackgroundColor(getResources().getColor(R.color.black));
+                        genderHeading.setTextColor(ContextCompat.getColor(RegisterPage.this, R.color.black));
                 }
             }
         });
+
+        termsCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(buttonView.isChecked()){
+                    agreeTermsErrorTextView.setText("");
+                }
+            }
+        });
+
     }
 
     // Method to set up click listener for the registration button
@@ -230,10 +230,7 @@ public class RegisterPage extends AppCompatActivity {
                 // Validate inputs when register button is clicked
                 if (validateInputs(v)) {
                     // If inputs are valid, show success message and clear fields
-                    setData();
-                    intent = new Intent(RegisterPage.this, ShowDetails.class);
-                    startActivity(intent);
-//                    Utility.displaySuccessSnackbar(v, "Registered Successfully", RegisterPage.this);
+                    Utility.displaySuccessSnackbar(v, "Registered Successfully", RegisterPage.this);
                     clearFields();
                 }
             }
@@ -256,29 +253,6 @@ public class RegisterPage extends AppCompatActivity {
         // Hide the keyboard on the click of the button
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(btnRegister.getWindowToken(), 0);
-    }
-
-    private void setData(){
-        editor.putString("fname",fnameEditText.getText().toString());
-        editor.putString("lname",lnameEditText.getText().toString());
-        editor.putString("email",emailEditText.getText().toString());
-        editor.putString("genderMale",maleRadioButton.getText().toString());
-        editor.putString("genderFemale",femaleRadioButton.getText().toString());
-        editor.putString("genderOthers",othersRadioButton.getText().toString());
-        editor.putString("country",countryDropdownSpinner.getSelectedItem().toString());
-//        editor.putString("gender",male.getText().toString());
-        editor.commit();
-    }
-
-    private void getData(){
-        String fn=pref.getString("fname",null);
-        String ln=pref.getString("lname",null);
-        String em=pref.getString("email",null);
-//        String gen=pref.getString("gender",null);
-        String coun=pref.getString("country",null);
-        if(fn!=null && ln!=null && em!=null  && coun!=null){
-//          Log.d("First name"+fn);
-        }
     }
 
 }
