@@ -2,12 +2,16 @@ package com.example.fourthAndroidApp;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -42,22 +46,22 @@ public class RegisterPage extends AppCompatActivity {
     private TextView radioButtonErrorTextView;
     private TextView agreeTermsErrorTextView;
     private ArrayAdapter<String> adapter;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
+    private static final String defaultString = "";
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Set the content view to the register page layout
         setContentView(R.layout.activity_register_page);
-
         // Get the root view of the activity's layout
         View rootView = findViewById(android.R.id.content);
-
         // Initialize views and widgets
         init();
-
         // Set up text change listeners for input validation
         textWatchListener();
-
         // Set up click listener for the registration button
         onClickRegisterButton();
     }
@@ -80,6 +84,7 @@ public class RegisterPage extends AppCompatActivity {
         radioButtonErrorTextView = findViewById(R.id.radioButtonErrorTextView);
         agreeTermsErrorTextView = findViewById(R.id.agreeTermsErrorTextView);
         genderHeading = findViewById(R.id.genderHeading);
+
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.country_list, android.R.layout.simple_spinner_item);
@@ -87,6 +92,10 @@ public class RegisterPage extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         countryDropdownSpinner.setAdapter(adapter);
+
+        // Initializing the shared preference and editor
+        sharedPreferences = getSharedPreferences(Utility.saveDetailsFilename, Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
     }
 
     // Method to validate user inputs
@@ -136,7 +145,7 @@ public class RegisterPage extends AppCompatActivity {
 
     // Method to set up text change listeners for input fields
     private void textWatchListener() {
-
+        // Listener for first name input field
         fnameEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -154,6 +163,7 @@ public class RegisterPage extends AppCompatActivity {
             }
         });
 
+        // Listener for last name input field
         lnameEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -169,6 +179,7 @@ public class RegisterPage extends AppCompatActivity {
             }
         });
 
+        // Listener for email input field
         emailEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -186,11 +197,12 @@ public class RegisterPage extends AppCompatActivity {
             }
         });
 
-        // Add "android.nonFinalResIds=false" in gradle.properties to avoid NonConstantResourceId warning
+        // Listener for gender radio group
         genderRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @SuppressLint("NonConstantResourceId")
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // Handle radio button check changes
                 switch (checkedId) {
                     case (R.id.maleRadioButton):
                         radioButtonErrorTextView.setText("");
@@ -211,15 +223,16 @@ public class RegisterPage extends AppCompatActivity {
             }
         });
 
+        // Listener for terms and conditions checkbox
         termsCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(buttonView.isChecked()){
+                // Clear any error when checkbox is checked
+                if (buttonView.isChecked()) {
                     agreeTermsErrorTextView.setText("");
                 }
             }
         });
-
     }
 
     // Method to set up click listener for the registration button
@@ -229,8 +242,14 @@ public class RegisterPage extends AppCompatActivity {
             public void onClick(View v) {
                 // Validate inputs when register button is clicked
                 if (validateInputs(v)) {
-                    // If inputs are valid, show success message and clear fields
+                    // Save data to shared preferences
+                    saveData();
+                    // Show a success message
                     Utility.displaySuccessSnackbar(v, "Registered Successfully", RegisterPage.this);
+                    // Navigate to the ShowDetails activity
+                    intent = new Intent(RegisterPage.this, ShowDetails.class);
+                    startActivity(intent);
+                    // Clear all input fields
                     clearFields();
                 }
             }
@@ -253,6 +272,34 @@ public class RegisterPage extends AppCompatActivity {
         // Hide the keyboard on the click of the button
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(btnRegister.getWindowToken(), 0);
+    }
+
+    // Method to save data to SharedPreferences
+    private void saveData() {
+        // Save first name, last name, and email to shared preferences
+        editor.putString(Utility.firstNameKey, fnameEditText.getText().toString());
+        editor.putString(Utility.lastNameKey, lnameEditText.getText().toString());
+        editor.putString(Utility.emailAddressKey, emailEditText.getText().toString());
+
+        // Save the selected country
+        String selectedCountry = countryDropdownSpinner.getSelectedItem().toString();
+        if (!"Select Country".equals(selectedCountry)) {
+            editor.putString(Utility.countryKey, selectedCountry);
+        }
+
+        // Save the selected gender
+        int selectedGenderId = genderRadioGroup.getCheckedRadioButtonId();
+        if (selectedGenderId != -1) {
+            RadioButton selectedRadioButton = findViewById(selectedGenderId);
+            String selectedGender = selectedRadioButton.getText().toString();
+            editor.putString(Utility.genderKey, selectedGender);
+        }
+
+        // Apply changes to shared preferences
+        editor.apply();
+
+        // Log the saved data for debugging purposes
+        Log.d(TAG, "savedData " + sharedPreferences.getString(Utility.firstNameKey, "") + " " + sharedPreferences.getString(Utility.lastNameKey, "") + " " + sharedPreferences.getString(Utility.emailAddressKey, "") + " " + sharedPreferences.getString(Utility.countryKey, "") + " " + sharedPreferences.getString(Utility.genderKey, ""));
     }
 
 }

@@ -1,5 +1,6 @@
 package com.example.fourthAndroidApp;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -16,63 +17,48 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.firstandroidapp.R;
 
 public class ShowDetails extends AppCompatActivity {
-    private TextView fname,lname,email,country,gender;
-    private Button btn;
+    private TextView nameView, emailView, genderView, countryView;
+    private Button logoutButton;
+    private SharedPreferences sharedPreferences;
 
-    SharedPreferences pref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_show_details);
 
-        fname=findViewById(R.id.first_text);
-        lname=findViewById(R.id.last_text);
-        email=findViewById(R.id.email_text);
-        country=findViewById(R.id.country_text);
-//        gender=findViewById(R.id.gender_text);
-        btn=findViewById(R.id.logout_button);
+        init();
+        setLocalStorageValues();
+        setLogoutButton();
 
+    }
 
-        pref=getSharedPreferences("login_details",MODE_PRIVATE);
-        String fn=pref.getString("fname",null);
-        String ln=pref.getString("lname",null);
-        String em=pref.getString("email",null);
-        String co=pref.getString("country",null);
-//        String Male=pref.getString("genderMale",null);
-//        String Female=pref.getString("genderMale",null);
-//        String Others=pref.getString("genderMale",null);
-//
-        if(fn!=null && ln!=null){
-            fname.setText("Full Name   :   "+ fn);
-            lname.setText("Last-Name   :   "+ln);
-            email.setText("Email   :   "+em);
-            country.setText("Country   :   "+co);
-//            gender.setText("Gender   :   "+gen);
-        }
+    private void init() {
+        nameView = findViewById(R.id.nameView);
+        emailView = findViewById(R.id.emailView);
+        genderView = findViewById(R.id.genderView);
+        countryView = findViewById(R.id.countryView);
+        logoutButton = findViewById(R.id.logoutButton);
+    }
 
-        btn.setOnClickListener(new View.OnClickListener() {
+    private void setLocalStorageValues() {
+        sharedPreferences = getSharedPreferences("login_details", MODE_PRIVATE);
+        nameView.setText(new StringBuilder().append("Hi, ").append(sharedPreferences.getString(Utility.firstNameKey, "")).append(" ").append(sharedPreferences.getString(Utility.lastNameKey, "")).append(" ").append("!").toString());
+        emailView.setText(sharedPreferences.getString(Utility.emailAddressKey, ""));
+        genderView.setText(sharedPreferences.getString(Utility.genderKey, ""));
+        countryView.setText(sharedPreferences.getString(Utility.countryKey, ""));
+    }
+
+    private void setLogoutButton(){
+        logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences.Editor editor=pref.edit();
+                SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.clear();
                 editor.apply();
                 Toast.makeText(ShowDetails.this, "Log out Successfully", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
-
-
-
-
-
-
-
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
     }
+
 }

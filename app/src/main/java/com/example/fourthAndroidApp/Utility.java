@@ -12,8 +12,15 @@ import com.google.android.material.snackbar.Snackbar;
 
 public class Utility {
 
+    public static final String saveDetailsFilename = "login_details";
+    public static final String firstNameKey = "first_name_key";
+    public static final String lastNameKey = "last_name_key";
+    public static final String emailAddressKey = "email_address_key";
+    public static final String countryKey = "country_selection_key";
+    public static final String genderKey = "gender_selection_key";
+
     // Method to display a Snackbar for success messages
-    static void displaySuccessSnackbar(View view, String message, Context context) {
+    public static void displaySuccessSnackbar(View view, String message, Context context) {
         // Create a Snackbar with the provided message and indefinite duration
         Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_INDEFINITE);
 
@@ -45,7 +52,7 @@ public class Utility {
     }
 
     // Method to display a Snackbar for error messages
-    static void displayErrorSnackbar(View view, String message, Context context) {
+    public static void displayErrorSnackbar(View view, String message, Context context) {
         // Create a Snackbar with the provided message and a longer duration
         Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
 
@@ -64,4 +71,5 @@ public class Utility {
         // Show the Snackbar
         snackbar.show();
     }
+
 }
