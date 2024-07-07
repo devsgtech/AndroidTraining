@@ -137,6 +137,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:background="@drawable/logout_button_background"
         android:text="@string/logout_button_text"
+        android:visibility="gone"
         android:textColor="@color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

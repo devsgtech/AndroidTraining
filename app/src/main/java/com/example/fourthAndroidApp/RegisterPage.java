@@ -50,6 +50,7 @@ public class RegisterPage extends AppCompatActivity {
     private SharedPreferences.Editor editor;
     private static final String defaultString = "";
     private Intent intent;
+    private View genderRadioGroupBottomView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +85,7 @@ public class RegisterPage extends AppCompatActivity {
         radioButtonErrorTextView = findViewById(R.id.radioButtonErrorTextView);
         agreeTermsErrorTextView = findViewById(R.id.agreeTermsErrorTextView);
         genderHeading = findViewById(R.id.genderHeading);
+        genderRadioGroupBottomView = findViewById(R.id.genderRadioGroupBottomView);
 
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -119,6 +121,7 @@ public class RegisterPage extends AppCompatActivity {
         } else {
             radioButtonErrorTextView.setText(R.string.gender_selection);
             genderHeading.setTextColor(ContextCompat.getColor(this, R.color.faliure));
+            genderRadioGroupBottomView.setBackgroundColor(ContextCompat.getColor(this, R.color.faliure));
             isValid = false;
         }
 
@@ -207,18 +210,22 @@ public class RegisterPage extends AppCompatActivity {
                     case (R.id.maleRadioButton):
                         radioButtonErrorTextView.setText("");
                         genderHeading.setTextColor(ContextCompat.getColor(RegisterPage.this, R.color.black));
+                        genderRadioGroupBottomView.setBackgroundColor(ContextCompat.getColor(RegisterPage.this, R.color.black));
                         break;
                     case (R.id.femaleRadioButton):
                         radioButtonErrorTextView.setText("");
                         genderHeading.setTextColor(ContextCompat.getColor(RegisterPage.this, R.color.black));
+                        genderRadioGroupBottomView.setBackgroundColor(ContextCompat.getColor(RegisterPage.this, R.color.black));
                         break;
                     case (R.id.othersRadioButton):
                         radioButtonErrorTextView.setText("");
                         genderHeading.setTextColor(ContextCompat.getColor(RegisterPage.this, R.color.black));
+                        genderRadioGroupBottomView.setBackgroundColor(ContextCompat.getColor(RegisterPage.this, R.color.black));
                         break;
                     default:
                         radioButtonErrorTextView.setText("");
                         genderHeading.setTextColor(ContextCompat.getColor(RegisterPage.this, R.color.black));
+                        genderRadioGroupBottomView.setBackgroundColor(ContextCompat.getColor(RegisterPage.this, R.color.black));
                 }
             }
         });
