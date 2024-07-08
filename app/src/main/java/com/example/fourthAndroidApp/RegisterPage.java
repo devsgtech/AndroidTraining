@@ -251,8 +251,8 @@ public class RegisterPage extends AppCompatActivity {
                 if (validateInputs(v)) {
                     // Save data to shared preferences
                     saveData();
-                    // Show a success message
-                    Utility.displaySuccessSnackbar(v, "Registered Successfully", RegisterPage.this);
+                    /* Show a success message if you want to. */
+                    // Utility.displaySuccessSnackbar(v, "Registered Successfully", RegisterPage.this);
                     // Navigate to the ShowDetails activity
                     intent = new Intent(RegisterPage.this, ShowDetails.class);
                     startActivity(intent);
