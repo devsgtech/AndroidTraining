@@ -1,4 +1,4 @@
-package com.example.fourthAndroidApp;
+package com.example.seventhAndroidApp;
 
 import org.junit.Test;
 

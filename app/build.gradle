@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.firstandroidapp'
+    namespace 'com.example.seventhandroidapp'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.example.firstandroidapp"
+        applicationId "com.example.seventhandroidapp"
         minSdk 24
         targetSdk 34
         versionCode 1

@@ -1,4 +1,4 @@
-package com.example.fourthAndroidApp;
+package com.example.seventhAndroidApp;
 
 import android.content.Context;
 import android.view.Gravity;
@@ -7,7 +7,7 @@ import android.widget.FrameLayout;
 
 import androidx.core.content.ContextCompat;
 
-import com.example.firstandroidapp.R;
+import com.example.seventhandroidapp.R;
 import com.google.android.material.snackbar.Snackbar;
 
 public class Utility {

@@ -1,5 +1,4 @@
-package com.example.fourthAndroidApp;
-
+package com.example.seventhAndroidApp;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +10,6 @@ import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -24,9 +22,12 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.example.firstandroidapp.R;
+import com.example.seventhandroidapp.R;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RegisterPage extends AppCompatActivity {
 
@@ -35,8 +36,8 @@ public class RegisterPage extends AppCompatActivity {
     // Flag to track input validation status
     private boolean isValid;
     // Views and Widgets
-    private TextInputLayout fnameLayout, emailLayout;
-    private TextInputEditText fnameEditText, lnameEditText, emailEditText;
+    private TextInputLayout fnameLayout, emailLayout, passwordLayout, confirmPasswordLayout;
+    private TextInputEditText fnameEditText, lnameEditText, emailEditText, contactNumber, password, confirmPassword;
     private Button btnRegister;
     private Spinner countryDropdownSpinner;
     private RadioGroup genderRadioGroup;
@@ -51,6 +52,9 @@ public class RegisterPage extends AppCompatActivity {
     private static final String defaultString = "";
     private Intent intent;
     private View genderRadioGroupBottomView;
+    private Boolean proceedTheValidations = true;
+    private final String passwordMatcher = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{4,}$";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +90,11 @@ public class RegisterPage extends AppCompatActivity {
         agreeTermsErrorTextView = findViewById(R.id.agreeTermsErrorTextView);
         genderHeading = findViewById(R.id.genderHeading);
         genderRadioGroupBottomView = findViewById(R.id.genderRadioGroupBottomView);
+        contactNumber = findViewById(R.id.contactNumber);
+        password = findViewById(R.id.password);
+        confirmPassword = findViewById(R.id.confirmPassword);
+        passwordLayout = findViewById(R.id.passwordLayout);
+        confirmPasswordLayout  =findViewById(R.id.confirmPasswordLayout);
 
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -102,20 +111,20 @@ public class RegisterPage extends AppCompatActivity {
 
     // Method to validate user inputs
     private boolean validateInputs(View v) {
-        // Retrieve text from the input fields
+        // Retrieve text from the input fields.
         String fname = fnameEditText.getText().toString();
         String email = emailEditText.getText().toString();
 
-        // Validate first name
+        // Validate first name.
         if (fname.isEmpty()) {
-            fnameLayout.setError("First name is required");
+            fnameLayout.setError(String.valueOf(R.string.first_name_required));
             isValid = false;
         } else {
             fnameLayout.setError(null);
             isValid = true;
         }
 
-        // Validate gender selection
+        // Validate gender selection.
         if (maleRadioButton.isChecked() || femaleRadioButton.isChecked() || othersRadioButton.isChecked()) {
             isValid = true;
         } else {
@@ -125,23 +134,41 @@ public class RegisterPage extends AppCompatActivity {
             isValid = false;
         }
 
-        // Validate email address
+        // Validate email address.
         if (email.isEmpty()) {
-            emailLayout.setError("Email is required");
+            emailLayout.setError(String.valueOf(R.string.email_required));
             isValid = false;
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            emailLayout.setError("Please enter a valid email address");
+            emailLayout.setError(String.valueOf(R.string.email_valid_required));
             isValid = false;
         } else {
             emailLayout.setError(null);
             isValid = true;
         }
 
-        // Validate terms and conditions checkbox
+        if(password.getText().toString().trim().isEmpty() || confirmPassword.getText().toString().trim().isEmpty()){
+            passwordLayout.setError(String.valueOf(R.string.password_required));
+            isValid = false;
+        }
+
+        if(confirmPassword.getText().toString().trim().isEmpty()){
+            confirmPassword.setError(String.valueOf(R.string.confirm_password_required));
+            isValid = false;
+        }
+
+        // Validate password and confirm password.
+        if(password.getText().toString().trim() != confirmPassword.getText().toString().trim()){
+            isValid = false;
+        }
+
+        // Validate terms and conditions checkbox.
         if (!termsCheckbox.isChecked()) {
             isValid = false;
             agreeTermsErrorTextView.setText(R.string.agree_terms);
         }
+
+
+
 
         return isValid;
     }
@@ -187,6 +214,8 @@ public class RegisterPage extends AppCompatActivity {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 emailEditText.setCursorVisible(true);
+                emailLayout.setError(null);
+                emailLayout.setFocusable(false);
             }
 
             @Override
@@ -197,6 +226,12 @@ public class RegisterPage extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
+                // To check if the value entered is valid.Here the proceedTheValidations check is given so that error is not thrown at the time of the validation check on click of the register button.
+                if (proceedTheValidations) {
+                    if (!Patterns.EMAIL_ADDRESS.matcher(s).matches()) {
+                        emailLayout.setError(String.valueOf(R.string.email_valid_required));
+                    }
+                }
             }
         });
 
@@ -230,6 +265,53 @@ public class RegisterPage extends AppCompatActivity {
             }
         });
 
+        // Listener for the password
+
+        password.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                passwordLayout.setError(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(proceedTheValidations){
+                    if(!isValidPassword(s.toString().trim())){
+                        passwordLayout.setError("Password is Invalid.");
+                    }
+                }
+            }
+        });
+
+        confirmPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if(proceedTheValidations){
+                    if(!isValidPassword(s.toString().trim())){
+                        passwordLayout.setError("Confirm Password is Invalid");
+                    }
+                }
+
+            }
+        });
+
+
         // Listener for terms and conditions checkbox
         termsCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -247,6 +329,9 @@ public class RegisterPage extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                proceedTheValidations = false;
+
                 // Validate inputs when register button is clicked
                 if (validateInputs(v)) {
                     // Save data to shared preferences
@@ -259,6 +344,8 @@ public class RegisterPage extends AppCompatActivity {
                     // Clear all input fields
                     clearFields();
                 }
+
+                proceedTheValidations = true;
             }
         });
     }
@@ -267,13 +354,18 @@ public class RegisterPage extends AppCompatActivity {
     private void clearFields() {
         fnameEditText.setText("");
         fnameEditText.setCursorVisible(false);
+
         lnameEditText.setText("");
         lnameEditText.setCursorVisible(false);
+
         emailEditText.setText("");
         emailEditText.setCursorVisible(false);
+        emailEditText.setFocusable(false);
+
         maleRadioButton.setChecked(false);
         femaleRadioButton.setChecked(false);
         othersRadioButton.setChecked(false);
+
         termsCheckbox.setChecked(false);
         countryDropdownSpinner.setSelection(0);
         // Hide the keyboard on the click of the button
@@ -307,6 +399,19 @@ public class RegisterPage extends AppCompatActivity {
 
         // Log the saved data for debugging purposes
         Log.d(TAG, "savedData " + sharedPreferences.getString(Utility.firstNameKey, "") + " " + sharedPreferences.getString(Utility.lastNameKey, "") + " " + sharedPreferences.getString(Utility.emailAddressKey, "") + " " + sharedPreferences.getString(Utility.countryKey, "") + " " + sharedPreferences.getString(Utility.genderKey, ""));
+    }
+
+    public boolean isValidPassword(final String password) {
+
+        Pattern pattern;
+        Matcher matcher;
+
+        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{6,}$";
+
+        pattern = Pattern.compile(PASSWORD_PATTERN);
+        matcher = pattern.matcher(password);
+
+        return matcher.matches();
     }
 
 }
