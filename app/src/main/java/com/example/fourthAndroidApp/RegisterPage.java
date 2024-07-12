@@ -1,13 +1,17 @@
 package com.example.fourthAndroidApp;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.RadioButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -28,6 +32,8 @@ public class RegisterPage extends AppCompatActivity {
     private TextInputEditText fnameEditText, lnameEditText, emailEditText;
     private Button btnRegister;
     private DataBaseHandler dataBaseHandler;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +60,8 @@ public class RegisterPage extends AppCompatActivity {
         emailEditText = findViewById(R.id.email);
         btnRegister = findViewById(R.id.btnRegister);
         dataBaseHandler = new DataBaseHandler(RegisterPage.this);
+        sharedPreferences = getSharedPreferences(Utility.saveDetailsFilename, Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
     }
 
     // Method to validate user inputs
@@ -151,6 +159,10 @@ public class RegisterPage extends AppCompatActivity {
                 if (validateInputs(v)) {
                     // Save data to local database.
                     saveData(v);
+                    saveSharedPreferenceData();
+                    // Navigating to the next page.
+                    Intent i =new Intent(RegisterPage.this, ShowDetails.class);
+                    startActivity(i);
                     // Clear all input fields
                     clearFields();
                 }
@@ -181,6 +193,24 @@ public class RegisterPage extends AppCompatActivity {
         dataBaseHandler.addUser(view, getApplicationContext() , firstName, lastName, email);
         dataBaseHandler.getAllUsers();
 
+
+
     }
+
+    private void saveSharedPreferenceData() {
+        // Save first name, last name, and email to shared preferences
+        editor.putString(Utility.firstNameKey, fnameEditText.getText().toString());
+        editor.putString(Utility.lastNameKey, lnameEditText.getText().toString());
+        editor.putString(Utility.emailAddressKey, emailEditText.getText().toString());
+
+        // Apply changes to shared preferences
+        editor.apply();
+
+        // Log the saved data for debugging purposes
+        Log.d(TAG, "savedData " + sharedPreferences.getString(Utility.firstNameKey, "") + " " + sharedPreferences.getString(Utility.lastNameKey, "") + " " + sharedPreferences.getString(Utility.emailAddressKey, ""));
+    }
+
+
+
 
 }
