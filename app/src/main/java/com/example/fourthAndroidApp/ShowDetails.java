@@ -28,11 +28,13 @@ public class ShowDetails extends AppCompatActivity {
         setLocalStorageValues();
     }
 
+    // Initialising the variables
     private void init() {
         nameView = findViewById(R.id.nameView);
         emailView = findViewById(R.id.emailView);
     }
 
+    //For setting the Local Storage Values
     private void setLocalStorageValues() {
         sharedPreferences = getSharedPreferences("login_details", MODE_PRIVATE);
         nameView.setText(new StringBuilder().append("Hi, ").append(sharedPreferences.getString(Utility.firstNameKey, "")).append(" ").append(sharedPreferences.getString(Utility.lastNameKey, "")).append(" ").append("!").toString());

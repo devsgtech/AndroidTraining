@@ -12,6 +12,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 public class Utility {
 
+    // Shared Preference keys
     public static final String saveDetailsFilename = "login_details";
     public static final String firstNameKey = "first_name_key";
     public static final String lastNameKey = "last_name_key";

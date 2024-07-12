@@ -170,7 +170,7 @@ public class RegisterPage extends AppCompatActivity {
         });
     }
 
-    // Method to clear input fields and remove the cursor blinking from them
+    // Method to clear input fields and remove the cursor blinking from them.
     private void clearFields() {
         fnameEditText.setText("");
         fnameEditText.setCursorVisible(false);
@@ -183,7 +183,7 @@ public class RegisterPage extends AppCompatActivity {
         imm.hideSoftInputFromWindow(btnRegister.getWindowToken(), 0);
     }
 
-    // Method to save data to SharedPreferences
+    // Method to save data in SharedPreferences.
     private void saveData(View view) {
         //Getting the values.
         String firstName = Objects.requireNonNull(fnameEditText.getText()).toString();
