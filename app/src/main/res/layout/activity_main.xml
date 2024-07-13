@@ -43,8 +43,6 @@
             android:orientation="vertical">
 
             <!-- ImageView displaying a background image -->
-
-            <!-- TextView displaying the "Hooray!" text -->
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="wrap_content"
@@ -53,6 +51,7 @@
                 android:layout_marginTop="20dp"
                 android:src="@drawable/welcome_background" />
 
+            <!-- TextView displaying the "Hooray!" text -->
             <TextView
                 android:id="@+id/textViewHeading"
                 android:layout_width="match_parent"
