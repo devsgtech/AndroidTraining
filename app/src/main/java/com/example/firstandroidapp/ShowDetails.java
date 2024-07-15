@@ -1,4 +1,4 @@
-package com.example.seventhAndroidApp;
+package com.example.firstandroidapp;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,8 +8,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.seventhandroidapp.R;
 
 
 public class ShowDetails extends AppCompatActivity {

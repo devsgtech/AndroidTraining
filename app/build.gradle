@@ -3,8 +3,9 @@ plugins {
 }
 
 android {
-    namespace 'com.example.seventhandroidapp'
+    namespace 'com.example.firstandroidapp'
     compileSdk 34
+
 
     defaultConfig {
         applicationId "com.example.seventhandroidapp"
@@ -16,11 +17,22 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
+        }
+
+    dataBinding{
+        enable = true
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+
+
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

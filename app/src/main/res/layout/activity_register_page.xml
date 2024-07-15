@@ -9,7 +9,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:fitsSystemWindows="true"
-    tools:context="com.example.seventhAndroidApp.RegisterPage">
+    tools:context="com.example.firstandroidapp.RegisterPage">
 
     <!-- Main container LinearLayout for the page content -->
     <LinearLayout

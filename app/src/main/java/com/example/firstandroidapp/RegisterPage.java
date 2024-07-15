@@ -1,4 +1,5 @@
-package com.example.seventhAndroidApp;
+package com.example.firstandroidapp;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -22,7 +23,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.example.seventhandroidapp.R;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -55,7 +55,6 @@ public class RegisterPage extends AppCompatActivity {
     private Boolean proceedTheValidations = true;
     private final String passwordMatcher = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{4,}$";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +62,7 @@ public class RegisterPage extends AppCompatActivity {
         setContentView(R.layout.activity_register_page);
         // Get the root view of the activity's layout
         View rootView = findViewById(android.R.id.content);
+
         // Initialize views and widgets
         init();
         // Set up text change listeners for input validation
