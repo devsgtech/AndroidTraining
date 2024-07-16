@@ -27,7 +27,9 @@
     <string name="gender_selection">Gender is required</string>
     <string name="password_required">Password is required</string>
     <string name="confirm_password_required">Confirm password is required</string>
+    <string name="passwords_do_not_match">Passwords do not match</string>
     <string name="agree_terms">Please agree to the Terms and Conditions</string>
+
 
     <!-- Array of country names for the spinner -->
     <string-array name="country_list">

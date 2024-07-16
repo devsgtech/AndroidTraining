@@ -149,6 +149,7 @@
                 app:endIconMode="custom"
                 app:endIconDrawable="@drawable/baseline_calendar_month_24"
                 app:errorEnabled="true"
+                app:errorIconDrawable="@null"
                 >
 
                 <!-- TextInputEditText for entering email address -->
@@ -156,11 +157,13 @@
                     android:id="@+id/dateSelection"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number|datetime"
+                    android:inputType="none"
                     android:clickable="true"
+                    android:focusable="false"
+                    android:cursorVisible="false"
+                    android:focusableInTouchMode="false"
                     android:textColor="@color/black" />
             </com.google.android.material.textfield.TextInputLayout>
-
 
             <!-- Dropdown for the country selection -->
             <Spinner
@@ -282,8 +285,7 @@
                 app:boxBackgroundColor="@android:color/white"
                 app:endIconMode="password_toggle"
                 app:errorEnabled="true"
-                app:errorIconDrawable="@null"
-                >
+                app:errorIconDrawable="@null">
 
                 <!-- TextInputEditText for entering email address -->
                 <com.google.android.material.textfield.TextInputEditText
@@ -292,6 +294,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
                     android:textColor="@color/black" />
+
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- For the Check Box -->
@@ -302,7 +305,7 @@
                 android:layout_marginLeft="6dp"
                 android:text="@string/checkbox_text" />
 
-            <!-- Textview for the error in the Gender Selection -->
+            <!-- Textview for the error in the CheckBox Selection -->
             <TextView
                 android:id="@+id/agreeTermsErrorTextView"
                 android:layout_width="match_parent"
@@ -326,4 +329,5 @@
         </LinearLayout>
 
     </LinearLayout>
+
 </ScrollView>

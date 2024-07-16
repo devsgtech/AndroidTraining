@@ -1,6 +1,9 @@
 package com.example.firstandroidapp;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -26,6 +30,8 @@ import androidx.core.content.ContextCompat;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,8 +42,8 @@ public class RegisterPage extends AppCompatActivity {
     // Flag to track input validation status
     private boolean isValid;
     // Views and Widgets
-    private TextInputLayout fnameLayout, emailLayout, passwordLayout, confirmPasswordLayout;
-    private TextInputEditText fnameEditText, lnameEditText, emailEditText, contactNumber, password, confirmPassword;
+    private TextInputLayout fnameLayout, emailLayout, passwordLayout, confirmPasswordLayout, contactNumberLayout, dateSelectionLayout;
+    private TextInputEditText fnameEditText, lnameEditText, emailEditText, contactNumber, password, confirmPassword, dateSelection;
     private Button btnRegister;
     private Spinner countryDropdownSpinner;
     private RadioGroup genderRadioGroup;
@@ -54,6 +60,8 @@ public class RegisterPage extends AppCompatActivity {
     private View genderRadioGroupBottomView;
     private Boolean proceedTheValidations = true;
     private final String passwordMatcher = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{4,}$";
+    private final String numberMatcher = "^[0-9]{0,10}$";
+    private boolean dateIsValid = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +70,6 @@ public class RegisterPage extends AppCompatActivity {
         setContentView(R.layout.activity_register_page);
         // Get the root view of the activity's layout
         View rootView = findViewById(android.R.id.content);
-
         // Initialize views and widgets
         init();
         // Set up text change listeners for input validation
@@ -86,6 +93,8 @@ public class RegisterPage extends AppCompatActivity {
         femaleRadioButton = findViewById(R.id.femaleRadioButton);
         othersRadioButton = findViewById(R.id.othersRadioButton);
         termsCheckbox = findViewById(R.id.termsCheckbox);
+        contactNumberLayout = findViewById(R.id.contactNumberLayout);
+        contactNumber = findViewById(R.id.contactNumber);
         radioButtonErrorTextView = findViewById(R.id.radioButtonErrorTextView);
         agreeTermsErrorTextView = findViewById(R.id.agreeTermsErrorTextView);
         genderHeading = findViewById(R.id.genderHeading);
@@ -94,8 +103,9 @@ public class RegisterPage extends AppCompatActivity {
         password = findViewById(R.id.password);
         confirmPassword = findViewById(R.id.confirmPassword);
         passwordLayout = findViewById(R.id.passwordLayout);
-        confirmPasswordLayout  =findViewById(R.id.confirmPasswordLayout);
-
+        confirmPasswordLayout = findViewById(R.id.confirmPasswordLayout);
+        dateSelection = findViewById(R.id.dateSelection);
+        dateSelectionLayout = findViewById(R.id.dateSelectionLayout);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.country_list, android.R.layout.simple_spinner_item);
@@ -103,7 +113,13 @@ public class RegisterPage extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         countryDropdownSpinner.setAdapter(adapter);
-
+        // On click listener for the Date Selection
+        dateSelection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                datePicker();
+            }
+        });
         // Initializing the shared preference and editor
         sharedPreferences = getSharedPreferences(Utility.saveDetailsFilename, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
@@ -111,13 +127,10 @@ public class RegisterPage extends AppCompatActivity {
 
     // Method to validate user inputs
     private boolean validateInputs(View v) {
-        // Retrieve text from the input fields.
-        String fname = fnameEditText.getText().toString();
-        String email = emailEditText.getText().toString();
 
         // Validate first name.
-        if (fname.isEmpty()) {
-            fnameLayout.setError(String.valueOf(R.string.first_name_required));
+        if (fnameEditText.getText().toString().isEmpty()) {
+            fnameLayout.setError(getString(R.string.first_name_required));
             isValid = false;
         } else {
             fnameLayout.setError(null);
@@ -135,30 +148,40 @@ public class RegisterPage extends AppCompatActivity {
         }
 
         // Validate email address.
-        if (email.isEmpty()) {
-            emailLayout.setError(String.valueOf(R.string.email_required));
+        if (emailEditText.getText().toString().isEmpty()) {
+            emailLayout.setError(getString(R.string.email_required));
             isValid = false;
-        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            emailLayout.setError(String.valueOf(R.string.email_valid_required));
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(emailEditText.getText().toString()).matches()) {
+            emailLayout.setError(getString(R.string.email_valid_required));
             isValid = false;
         } else {
             emailLayout.setError(null);
             isValid = true;
         }
 
-        if(password.getText().toString().trim().isEmpty() || confirmPassword.getText().toString().trim().isEmpty()){
-            passwordLayout.setError(String.valueOf(R.string.password_required));
+        // Validation for the Password.
+        if (password.getText().toString().trim().isEmpty()) {
+            passwordLayout.setError(getString(R.string.password_required));
             isValid = false;
         }
 
-        if(confirmPassword.getText().toString().trim().isEmpty()){
-            confirmPassword.setError(String.valueOf(R.string.confirm_password_required));
+        //Validation for the contact number
+        if (contactNumber.getText().toString().trim().length() > 10) {
+            isValid = false;
+        }
+
+        // Validation for the Confirm Password.
+        if (confirmPassword.getText().toString().trim().isEmpty()) {
+            confirmPasswordLayout.setError(getString(R.string.confirm_password_required));
             isValid = false;
         }
 
         // Validate password and confirm password.
-        if(password.getText().toString().trim() != confirmPassword.getText().toString().trim()){
-            isValid = false;
+        if (!password.getText().toString().trim().isEmpty() && !confirmPassword.getText().toString().trim().isEmpty()) {
+            if (!password.getText().toString().trim().equals(confirmPassword.getText().toString().trim())) {
+                Utility.displayErrorSnackbar(getCurrentFocus(), getString(R.string.passwords_do_not_match), getApplicationContext());
+                isValid = false;
+            }
         }
 
         // Validate terms and conditions checkbox.
@@ -167,14 +190,12 @@ public class RegisterPage extends AppCompatActivity {
             agreeTermsErrorTextView.setText(R.string.agree_terms);
         }
 
-
-
-
         return isValid;
     }
 
     // Method to set up text change listeners for input fields
     private void textWatchListener() {
+
         // Listener for first name input field
         fnameEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -229,7 +250,51 @@ public class RegisterPage extends AppCompatActivity {
                 // To check if the value entered is valid.Here the proceedTheValidations check is given so that error is not thrown at the time of the validation check on click of the register button.
                 if (proceedTheValidations) {
                     if (!Patterns.EMAIL_ADDRESS.matcher(s).matches()) {
-                        emailLayout.setError(String.valueOf(R.string.email_valid_required));
+                        emailLayout.setError(getString(R.string.email_valid_required));
+                    }
+                }
+            }
+        });
+
+        // Listener for Contact Number input field
+        contactNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                contactNumberLayout.setError(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!contactNumber.getText().toString().trim().isEmpty()) {
+                    if (!validator(s.toString().trim(), numberMatcher)) {
+                        contactNumberLayout.setError("Should contain numbers and utmost 10 digits");
+                    }
+                }
+            }
+        });
+
+        // Listener for Date Selection field
+        dateSelection.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                dateSelectionLayout.setError(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!dateSelection.getText().toString().isEmpty()) {
+                    if (!dateIsValid) {
+                        dateSelectionLayout.setError("Age should be 18 years or above.");
+
                     }
                 }
             }
@@ -266,7 +331,6 @@ public class RegisterPage extends AppCompatActivity {
         });
 
         // Listener for the password
-
         password.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -280,14 +344,15 @@ public class RegisterPage extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(proceedTheValidations){
-                    if(!isValidPassword(s.toString().trim())){
+                if (proceedTheValidations) {
+                    if (!validator(s.toString().trim(), passwordMatcher)) {
                         passwordLayout.setError("Password is Invalid.");
                     }
                 }
             }
         });
 
+        // Listener for the confirm password
         confirmPassword.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -296,21 +361,19 @@ public class RegisterPage extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                confirmPasswordLayout.setError(null);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
-                if(proceedTheValidations){
-                    if(!isValidPassword(s.toString().trim())){
-                        passwordLayout.setError("Confirm Password is Invalid");
+                if (proceedTheValidations) {
+                    if (!validator(s.toString().trim(), passwordMatcher)) {
+                        confirmPasswordLayout.setError("Confirm Password is Invalid");
                     }
                 }
 
             }
         });
-
 
         // Listener for terms and conditions checkbox
         termsCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -322,6 +385,7 @@ public class RegisterPage extends AppCompatActivity {
                 }
             }
         });
+
     }
 
     // Method to set up click listener for the registration button
@@ -329,9 +393,7 @@ public class RegisterPage extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 proceedTheValidations = false;
-
                 // Validate inputs when register button is clicked
                 if (validateInputs(v)) {
                     // Save data to shared preferences
@@ -352,6 +414,7 @@ public class RegisterPage extends AppCompatActivity {
 
     // Method to clear input fields and remove the cursor blinking from them
     private void clearFields() {
+
         fnameEditText.setText("");
         fnameEditText.setCursorVisible(false);
 
@@ -365,6 +428,17 @@ public class RegisterPage extends AppCompatActivity {
         maleRadioButton.setChecked(false);
         femaleRadioButton.setChecked(false);
         othersRadioButton.setChecked(false);
+
+        contactNumber.setText("");
+        contactNumber.setCursorVisible(false);
+
+        dateSelection.setText("");
+
+        password.setText("");
+        password.setCursorVisible(false);
+
+        confirmPassword.setText("");
+        confirmPassword.setCursorVisible(false);
 
         termsCheckbox.setChecked(false);
         countryDropdownSpinner.setSelection(0);
@@ -401,17 +475,63 @@ public class RegisterPage extends AppCompatActivity {
         Log.d(TAG, "savedData " + sharedPreferences.getString(Utility.firstNameKey, "") + " " + sharedPreferences.getString(Utility.lastNameKey, "") + " " + sharedPreferences.getString(Utility.emailAddressKey, "") + " " + sharedPreferences.getString(Utility.countryKey, "") + " " + sharedPreferences.getString(Utility.genderKey, ""));
     }
 
-    public boolean isValidPassword(final String password) {
-
+    // Validator checker.
+    private boolean validator(final String validInput, final String validPattern) {
         Pattern pattern;
         Matcher matcher;
-
-        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{6,}$";
-
-        pattern = Pattern.compile(PASSWORD_PATTERN);
-        matcher = pattern.matcher(password);
-
+        pattern = Pattern.compile(validPattern);
+        matcher = pattern.matcher(validInput);
         return matcher.matches();
+    }
+
+    //Method for the validation of the date input
+    private void datePicker() {
+        final Calendar c = Calendar.getInstance();
+
+        // on below line we are getting our day, month and year.
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+
+        // on below line we are creating a variable for date picker dialog.
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                // on below line we are passing context.
+                RegisterPage.this,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+
+                        //To get the current date
+                        Calendar currentDate = Calendar.getInstance();
+
+                        // To get the choosen date
+                        Calendar chosenDate = Calendar.getInstance();
+                        chosenDate.set(year, monthOfYear, dayOfMonth);
+
+                        // Checking the difference in milliSeconds.
+                        long diffInMillis = Math.abs(currentDate.getTimeInMillis() - chosenDate.getTimeInMillis());
+
+                        // Convert the difference to days
+                        long diffInDays = TimeUnit.DAYS.convert(diffInMillis, TimeUnit.MILLISECONDS);
+
+                        if (diffInDays < 6575) {
+                            dateIsValid = false;
+                        } else {
+                            dateIsValid = true;
+                        }
+
+                        // on below line we are setting date to our text view.
+                        dateSelection.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                    }
+                },
+                // on below line we are passing year, month and day for selected date in our date picker.
+                year, month, day);
+
+        //To set the maximum selection to the current date.
+        datePickerDialog.getDatePicker().setMaxDate(c.getTimeInMillis());
+        // at last we are calling show display our date picker dialog.
+        datePickerDialog.show();
     }
 
 }
