@@ -55,7 +55,6 @@ public class RegisterPage extends AppCompatActivity {
     private ArrayAdapter<String> adapter;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
-    private static final String defaultString = "";
     private Intent intent;
     private View genderRadioGroupBottomView;
     private Boolean proceedTheValidations = true;
@@ -452,27 +451,12 @@ public class RegisterPage extends AppCompatActivity {
         // Save first name, last name, and email to shared preferences
         editor.putString(Utility.firstNameKey, fnameEditText.getText().toString());
         editor.putString(Utility.lastNameKey, lnameEditText.getText().toString());
-        editor.putString(Utility.emailAddressKey, emailEditText.getText().toString());
-
-        // Save the selected country
-        String selectedCountry = countryDropdownSpinner.getSelectedItem().toString();
-        if (!"Select Country".equals(selectedCountry)) {
-            editor.putString(Utility.countryKey, selectedCountry);
-        }
-
-        // Save the selected gender
-        int selectedGenderId = genderRadioGroup.getCheckedRadioButtonId();
-        if (selectedGenderId != -1) {
-            RadioButton selectedRadioButton = findViewById(selectedGenderId);
-            String selectedGender = selectedRadioButton.getText().toString();
-            editor.putString(Utility.genderKey, selectedGender);
-        }
 
         // Apply changes to shared preferences
         editor.apply();
 
         // Log the saved data for debugging purposes
-        Log.d(TAG, "savedData " + sharedPreferences.getString(Utility.firstNameKey, "") + " " + sharedPreferences.getString(Utility.lastNameKey, "") + " " + sharedPreferences.getString(Utility.emailAddressKey, "") + " " + sharedPreferences.getString(Utility.countryKey, "") + " " + sharedPreferences.getString(Utility.genderKey, ""));
+        Log.d(TAG, "savedData " + sharedPreferences.getString(Utility.firstNameKey, "") + " " + sharedPreferences.getString(Utility.lastNameKey, ""));
     }
 
     // Validator checker.
