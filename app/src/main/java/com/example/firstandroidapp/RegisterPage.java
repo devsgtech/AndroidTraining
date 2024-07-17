@@ -30,6 +30,7 @@ import androidx.core.content.ContextCompat;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -62,6 +63,8 @@ public class RegisterPage extends AppCompatActivity {
     private final String passwordMatcher = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{4,}$";
     private final String numberMatcher = "^[0-9]{0,10}$";
     private boolean dateIsValid = true;
+    private DataBaseHandler dataBaseHandler;
+    private String passwordToBeSaved;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,8 +81,16 @@ public class RegisterPage extends AppCompatActivity {
         onClickRegisterButton();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // To get all the user on the start of the app in logcat.
+        dataBaseHandler.getAllUsers();
+    }
+
     // Method to initialize views and widgets
     private void init() {
+
         // Link the variables to the views in the layout
         fnameLayout = findViewById(R.id.fnameLayout);
         emailLayout = findViewById(R.id.emailLayout);
@@ -106,13 +117,18 @@ public class RegisterPage extends AppCompatActivity {
         confirmPasswordLayout = findViewById(R.id.confirmPasswordLayout);
         dateSelection = findViewById(R.id.dateSelection);
         dateSelectionLayout = findViewById(R.id.dateSelectionLayout);
+        dataBaseHandler = new DataBaseHandler(RegisterPage.this);
+
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.country_list, android.R.layout.simple_spinner_item);
+
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         // Apply the adapter to the spinner
         countryDropdownSpinner.setAdapter(adapter);
+
         // On click listener for the Date Selection
         dateSelection.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,6 +136,7 @@ public class RegisterPage extends AppCompatActivity {
                 datePicker();
             }
         });
+
         // Initializing the shared preference and editor
         sharedPreferences = getSharedPreferences(Utility.saveDetailsFilename, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
@@ -270,7 +287,7 @@ public class RegisterPage extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 if (!contactNumber.getText().toString().trim().isEmpty()) {
-                    if (!validator(s.toString().trim(), numberMatcher)) {
+                    if (!Utility.validator(s.toString().trim(), numberMatcher)) {
                         contactNumberLayout.setError("Should contain numbers and utmost 10 digits");
                     }
                 }
@@ -345,7 +362,7 @@ public class RegisterPage extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 if (proceedTheValidations) {
-                    if (!validator(s.toString().trim(), passwordMatcher)) {
+                    if (!Utility.validator(s.toString().trim(), passwordMatcher)) {
                         passwordLayout.setError("Password is Invalid.");
                     }
                 }
@@ -367,7 +384,7 @@ public class RegisterPage extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 if (proceedTheValidations) {
-                    if (!validator(s.toString().trim(), passwordMatcher)) {
+                    if (!Utility.validator(s.toString().trim(), passwordMatcher)) {
                         confirmPasswordLayout.setError("Confirm Password is Invalid");
                     }
                 }
@@ -393,20 +410,26 @@ public class RegisterPage extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Check for stopping the TextWatcher Validations.
                 proceedTheValidations = false;
-                // Validate inputs when register button is clicked
+                // Validate inputs when register button is clicked.
                 if (validateInputs(v)) {
-                    // Save data to shared preferences
-                    saveData();
-                    /* Show a success message if you want to. */
-                    // Utility.displaySuccessSnackbar(v, "Registered Successfully", RegisterPage.this);
-                    // Navigate to the ShowDetails activity
-                    intent = new Intent(RegisterPage.this, ShowDetails.class);
-                    startActivity(intent);
-                    // Clear all input fields
-                    clearFields();
+                    if (!dataBaseHandler.alreadyExist(emailEditText.getText().toString().trim())) {
+                        // Save data to shared preferences.
+                        saveData(v);
+                        // Show a success message if you want to.
+                         Utility.displaySuccessSnackbar(v, getString(R.string.registered_successfully), RegisterPage.this);
+                        // Navigate to the ShowDetails activity.
+                        intent = new Intent(RegisterPage.this, ShowDetails.class);
+                        startActivity(intent);
+                        // Clear all input fields.
+                        clearFields();
+                    }else{
+                        // Showing an error message.
+                        Utility.displayErrorSnackbar(v, getString(R.string.email_already_exists) ,RegisterPage.this);
+                    }
                 }
-
+                // Check for resuming the TextWatcher Validations.
                 proceedTheValidations = true;
             }
         });
@@ -448,40 +471,39 @@ public class RegisterPage extends AppCompatActivity {
     }
 
     // Method to save data to SharedPreferences
-    private void saveData() {
+    private void saveData(View view) {
         // Save first name, last name, and email to shared preferences
         editor.putString(Utility.firstNameKey, fnameEditText.getText().toString());
         editor.putString(Utility.lastNameKey, lnameEditText.getText().toString());
         editor.putString(Utility.emailAddressKey, emailEditText.getText().toString());
 
         // Save the selected country
-        String selectedCountry = countryDropdownSpinner.getSelectedItem().toString();
-        if (!"Select Country".equals(selectedCountry)) {
-            editor.putString(Utility.countryKey, selectedCountry);
-        }
+        String selectedCountry = countryDropdownSpinner.getSelectedItem().toString() == "Select Country" ? "" : countryDropdownSpinner.getSelectedItem().toString();
 
         // Save the selected gender
         int selectedGenderId = genderRadioGroup.getCheckedRadioButtonId();
+        String selectedGender = "";
         if (selectedGenderId != -1) {
             RadioButton selectedRadioButton = findViewById(selectedGenderId);
-            String selectedGender = selectedRadioButton.getText().toString();
-            editor.putString(Utility.genderKey, selectedGender);
+            selectedGender = selectedRadioButton.getText().toString();
         }
 
         // Apply changes to shared preferences
         editor.apply();
 
+        // For storing the Hashed password.
+        try {
+            passwordToBeSaved = Utility.passwordHashing(password.getText().toString().trim());
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Save data to the SQLite Database.
+        dataBaseHandler.addUser(view, getApplicationContext(), fnameEditText.getText().toString().trim(), lnameEditText.getText().toString().trim(), emailEditText.getText().toString().trim(), contactNumber.getText().toString().trim(), dateSelection.getText().toString().trim(), selectedCountry.toString().trim(), selectedGender.toString().trim(), passwordToBeSaved, passwordToBeSaved, termsCheckbox.isChecked());
+        dataBaseHandler.getAllUsers();
+
         // Log the saved data for debugging purposes
         Log.d(TAG, "savedData " + sharedPreferences.getString(Utility.firstNameKey, "") + " " + sharedPreferences.getString(Utility.lastNameKey, "") + " " + sharedPreferences.getString(Utility.emailAddressKey, "") + " " + sharedPreferences.getString(Utility.countryKey, "") + " " + sharedPreferences.getString(Utility.genderKey, ""));
-    }
-
-    // Validator checker.
-    private boolean validator(final String validInput, final String validPattern) {
-        Pattern pattern;
-        Matcher matcher;
-        pattern = Pattern.compile(validPattern);
-        matcher = pattern.matcher(validInput);
-        return matcher.matches();
     }
 
     //Method for the validation of the date input

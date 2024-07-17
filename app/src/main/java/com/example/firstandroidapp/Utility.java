@@ -9,6 +9,11 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class Utility {
 
     public static final String saveDetailsFilename = "login_details";
@@ -80,6 +85,31 @@ public class Utility {
 
         // Show the Snackbar
         snackbar.show();
+    }
+
+    // Validator checker.
+    public static boolean validator(final String validInput, final String validPattern) {
+        Pattern pattern;
+        Matcher matcher;
+        pattern = Pattern.compile(validPattern);
+        matcher = pattern.matcher(validInput);
+        return matcher.matches();
+    }
+
+    // Password Hashing.
+    public static String passwordHashing(String passwordInput) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("SHA-512");
+        md.reset();
+        md.update(passwordInput.getBytes());
+        byte[] mdArray = md.digest();
+        StringBuilder sb = new StringBuilder(mdArray.length * 2);
+        for(byte b : mdArray) {
+            int v = b & 0xff;
+            if(v < 16)
+                sb.append('0');
+            sb.append(Integer.toHexString(v));
+        }
+        return sb.toString();
     }
 
 }
