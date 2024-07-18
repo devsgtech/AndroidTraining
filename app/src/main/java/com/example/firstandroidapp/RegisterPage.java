@@ -23,6 +23,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -50,12 +51,8 @@ public class RegisterPage extends AppCompatActivity {
     private RadioGroup genderRadioGroup;
     private RadioButton maleRadioButton, femaleRadioButton, othersRadioButton;
     private CheckBox termsCheckbox;
-    private TextView genderHeading;
-    private TextView radioButtonErrorTextView;
-    private TextView agreeTermsErrorTextView;
+    private TextView genderHeading, radioButtonErrorTextView, agreeTermsErrorTextView, goToLogin;
     private ArrayAdapter<String> adapter;
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editor;
     private static final String defaultString = "";
     private Intent intent;
     private View genderRadioGroupBottomView;
@@ -71,14 +68,25 @@ public class RegisterPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         // Set the content view to the register page layout
         setContentView(R.layout.activity_register_page);
-        // Get the root view of the activity's layout
-        View rootView = findViewById(android.R.id.content);
+        // Setting the Toolbar as the app bar for the activity
+        setSupportActionBar(findViewById(R.id.my_toolbar));
+        // Setting the title for the app bar
+        getSupportActionBar().setTitle("Register");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         // Initialize views and widgets
         init();
         // Set up text change listeners for input validation
         textWatchListener();
         // Set up click listener for the registration button
-        onClickRegisterButton();
+        buttonClick();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     @Override
@@ -108,6 +116,7 @@ public class RegisterPage extends AppCompatActivity {
         contactNumber = findViewById(R.id.contactNumber);
         radioButtonErrorTextView = findViewById(R.id.radioButtonErrorTextView);
         agreeTermsErrorTextView = findViewById(R.id.agreeTermsErrorTextView);
+        goToLogin = findViewById(R.id.goToLogin);
         genderHeading = findViewById(R.id.genderHeading);
         genderRadioGroupBottomView = findViewById(R.id.genderRadioGroupBottomView);
         contactNumber = findViewById(R.id.contactNumber);
@@ -137,9 +146,7 @@ public class RegisterPage extends AppCompatActivity {
             }
         });
 
-        // Initializing the shared preference and editor
-        sharedPreferences = getSharedPreferences(Utility.saveDetailsFilename, Context.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
+
     }
 
     // Method to validate user inputs
@@ -406,7 +413,8 @@ public class RegisterPage extends AppCompatActivity {
     }
 
     // Method to set up click listener for the registration button
-    private void onClickRegisterButton() {
+    private void buttonClick() {
+
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -418,21 +426,33 @@ public class RegisterPage extends AppCompatActivity {
                         // Save data to shared preferences.
                         saveData(v);
                         // Show a success message if you want to.
-                         Utility.displaySuccessSnackbar(v, getString(R.string.registered_successfully), RegisterPage.this);
-                        // Navigate to the ShowDetails activity.
-                        intent = new Intent(RegisterPage.this, ShowDetails.class);
+                        Utility.displaySuccessSnackbar(v, getString(R.string.registered_successfully), RegisterPage.this);
+
+                        // After successfully registering navigate to login page.
+                        intent = new Intent(RegisterPage.this, LoginPage.class);
                         startActivity(intent);
+
                         // Clear all input fields.
                         clearFields();
-                    }else{
+                    } else {
                         // Showing an error message.
-                        Utility.displayErrorSnackbar(v, getString(R.string.email_already_exists) ,RegisterPage.this);
+                        Utility.displayErrorSnackbar(v, getString(R.string.email_already_exists), RegisterPage.this);
                     }
                 }
                 // Check for resuming the TextWatcher Validations.
                 proceedTheValidations = true;
             }
         });
+
+        goToLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(RegisterPage.this, LoginPage.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
     }
 
     // Method to clear input fields and remove the cursor blinking from them
@@ -472,10 +492,6 @@ public class RegisterPage extends AppCompatActivity {
 
     // Method to save data to SharedPreferences
     private void saveData(View view) {
-        // Save first name, last name, and email to shared preferences
-        editor.putString(Utility.firstNameKey, fnameEditText.getText().toString());
-        editor.putString(Utility.lastNameKey, lnameEditText.getText().toString());
-        editor.putString(Utility.emailAddressKey, emailEditText.getText().toString());
 
         // Save the selected country
         String selectedCountry = countryDropdownSpinner.getSelectedItem().toString() == "Select Country" ? "" : countryDropdownSpinner.getSelectedItem().toString();
@@ -488,9 +504,6 @@ public class RegisterPage extends AppCompatActivity {
             selectedGender = selectedRadioButton.getText().toString();
         }
 
-        // Apply changes to shared preferences
-        editor.apply();
-
         // For storing the Hashed password.
         try {
             passwordToBeSaved = Utility.passwordHashing(password.getText().toString().trim());
@@ -499,11 +512,9 @@ public class RegisterPage extends AppCompatActivity {
         }
 
         // Save data to the SQLite Database.
-        dataBaseHandler.addUser(view, getApplicationContext(), fnameEditText.getText().toString().trim(), lnameEditText.getText().toString().trim(), emailEditText.getText().toString().trim(), contactNumber.getText().toString().trim(), dateSelection.getText().toString().trim(), selectedCountry.toString().trim(), selectedGender.toString().trim(), passwordToBeSaved, passwordToBeSaved, termsCheckbox.isChecked());
+        dataBaseHandler.addUser(view, getApplicationContext(), fnameEditText.getText().toString().trim(), lnameEditText.getText().toString().trim(), emailEditText.getText().toString().trim().toLowerCase(), contactNumber.getText().toString().trim(), dateSelection.getText().toString().trim(), selectedCountry.toString().trim(), selectedGender.toString().trim(), passwordToBeSaved, passwordToBeSaved, termsCheckbox.isChecked());
         dataBaseHandler.getAllUsers();
 
-        // Log the saved data for debugging purposes
-        Log.d(TAG, "savedData " + sharedPreferences.getString(Utility.firstNameKey, "") + " " + sharedPreferences.getString(Utility.lastNameKey, "") + " " + sharedPreferences.getString(Utility.emailAddressKey, "") + " " + sharedPreferences.getString(Utility.countryKey, "") + " " + sharedPreferences.getString(Utility.genderKey, ""));
     }
 
     //Method for the validation of the date input

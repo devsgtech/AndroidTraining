@@ -22,6 +22,9 @@ public class Utility {
     public static final String emailAddressKey = "email_address_key";
     public static final String countryKey = "country_selection_key";
     public static final String genderKey = "gender_selection_key";
+    public static final String dateOfBirthKey = "date_of_birth_key";
+    public static final String contactNumberKey = "contact_number_key";
+
 
     // Method to display a Snackbar for success messages
     public static void displaySuccessSnackbar(View view, String message, Context context) {

@@ -1,40 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- Root ScrollView to enable scrolling for the content -->
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
-    android:fitsSystemWindows="true"
-    tools:context="com.example.firstandroidapp.RegisterPage">
+    android:orientation="vertical">
 
-    <!-- Main container LinearLayout for the page content -->
-    <LinearLayout
+    <!-- Toolbar for the app -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:elevation="18dp"
+        android:background="@android:color/holo_orange_dark"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:titleTextAppearance="@style/TextAppearance.Material3.TitleLarge"
+        app:titleTextColor="@color/white" />
+
+    <!-- FrameLayout containing a View for the shadow effect below the Toolbar -->
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:orientation="vertical">
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/my_toolbar">
 
-        <!-- FrameLayout to hold the background image and texts -->
-        <FrameLayout
+        <!-- View to simulate a shadow under the Toolbar -->
+        <View
             android:layout_width="match_parent"
-            android:layout_height="285dp">
+            android:layout_height="5dp"
+            android:background="@drawable/toolbar_background" />
+    </FrameLayout>
 
-            <!-- ImageView for the background image -->
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/register_background" />
+    <!-- Root ScrollView to enable scrolling for the content -->
+    <ScrollView
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:fitsSystemWindows="true"
+        tools:context="com.example.firstandroidapp.RegisterPage">
+
+        <!-- Main container LinearLayout for the page content -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:orientation="vertical">
 
             <!-- TextView for the "Register" title -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="200dp"
                 android:text="@string/registration_heading_text"
                 android:textAlignment="center"
                 android:textColor="@android:color/black"
@@ -46,288 +64,312 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="38dp"
-                android:layout_marginTop="240dp"
                 android:layout_marginEnd="48dp"
                 android:text="@string/registration_subheading_text"
                 android:textAlignment="center"
                 android:textSize="14sp" />
 
-        </FrameLayout>
 
-        <!-- Container LinearLayout for the input fields and register button -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="12dp">
-
-            <!-- TextInputLayout for first name input field -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/fnameLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/first_name_hint"
-                app:boxBackgroundColor="@android:color/white"
-                app:errorEnabled="true">
-
-                <!-- TextInputEditText for entering first name -->
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/fname"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:textColor="@color/black" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- TextInputLayout for last name input field -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/lnameLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/last_name_hint"
-                app:boxBackgroundColor="@android:color/white"
-                app:errorEnabled="true">
-
-                <!-- TextInputEditText for entering last name -->
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/lname"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:textColor="@color/black" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- TextInputLayout for email address input field -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/emailLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/email_address_hint"
-                app:boxBackgroundColor="@android:color/white"
-                app:errorEnabled="true">
-
-                <!-- TextInputEditText for entering email address -->
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"
-                    android:textColor="@color/black" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- TextInputLayout for contact number input field -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/contactNumberLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/contact_number_hint"
-                app:boxBackgroundColor="@android:color/white"
-                app:errorEnabled="true"
-                >
-
-                <!-- TextInputEditText for entering email address -->
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/contactNumber"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="phone"
-                    android:textColor="@color/black" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- Layout field for Date selection -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/dateSelectionLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/date_of_birth_hint"
-                app:boxBackgroundColor="@android:color/white"
-                app:endIconMode="custom"
-                app:endIconDrawable="@drawable/baseline_calendar_month_24"
-                app:errorEnabled="true"
-                app:errorIconDrawable="@null"
-                >
-
-                <!-- TextInputEditText for entering email address -->
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/dateSelection"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="none"
-                    android:clickable="true"
-                    android:focusable="false"
-                    android:cursorVisible="false"
-                    android:focusableInTouchMode="false"
-                    android:textColor="@color/black" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- Dropdown for the country selection -->
-            <Spinner
-                android:id="@+id/countryDropdownSpinner"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="-2dp"
-                android:hint="Select country" />
-
-            <!-- Added this view for the bottom of the Spinner -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@android:color/darker_gray" />
-
-            <!-- Layout field for Gender selection -->
+            <!-- Container LinearLayout for the input fields and register button -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="12dp">
 
+                <!-- TextInputLayout for first name input field -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/fnameLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/first_name_hint"
+                    app:boxBackgroundColor="@android:color/white"
+                    app:errorEnabled="true">
+
+                    <!-- TextInputEditText for entering first name -->
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/fname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:textColor="@color/black" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- TextInputLayout for last name input field -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/lnameLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/last_name_hint"
+                    app:boxBackgroundColor="@android:color/white"
+                    app:errorEnabled="true">
+
+                    <!-- TextInputEditText for entering last name -->
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/lname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:textColor="@color/black" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- TextInputLayout for email address input field -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/emailLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/email_address_hint"
+                    app:boxBackgroundColor="@android:color/white"
+                    app:errorEnabled="true">
+
+                    <!-- TextInputEditText for entering email address -->
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textEmailAddress"
+                        android:textColor="@color/black" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- TextInputLayout for contact number input field -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/contactNumberLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/contact_number_hint"
+                    app:boxBackgroundColor="@android:color/white"
+                    app:errorEnabled="true">
+
+                    <!-- TextInputEditText for entering email address -->
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/contactNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="phone"
+                        android:textColor="@color/black" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Layout field for Date selection -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/dateSelectionLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/date_of_birth_hint"
+                    app:boxBackgroundColor="@android:color/white"
+                    app:endIconDrawable="@drawable/baseline_calendar_month_24"
+                    app:endIconMode="custom"
+                    app:errorEnabled="true"
+                    app:errorIconDrawable="@null">
+
+                    <!-- TextInputEditText for entering email address -->
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/dateSelection"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="none"
+                        android:textColor="@color/black" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Dropdown for the country selection -->
+                <Spinner
+                    android:id="@+id/countryDropdownSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="-2dp"
+                    android:hint="Select country" />
+
+                <!-- Added this view for the bottom of the Spinner -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray" />
+
+                <!-- Layout field for Gender selection -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/genderHeading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_marginHorizontal="15dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_weight="1"
+                        android:text="@string/select_gender_heading"
+                        android:textSize="16sp" />
+
+                    <!-- Radio group code -->
+                    <RadioGroup
+                        android:id="@+id/genderRadioGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="15dp"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/maleRadioButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:text="Male"
+                            app:buttonTint="@android:color/holo_orange_dark" />
+
+                        <RadioButton
+                            android:id="@+id/femaleRadioButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:text="female"
+                            app:buttonTint="@android:color/holo_orange_dark" />
+
+                        <RadioButton
+                            android:id="@+id/othersRadioButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:text="Others"
+                            app:buttonTint="@android:color/holo_orange_dark" />
+
+                    </RadioGroup>
+
+                </LinearLayout>
+
+                <!-- Added this view for the bottom of the Gender Selection -->
+                <View
+                    android:id="@+id/genderRadioGroupBottomView"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray" />
+
+                <!-- Textview for the error in the Gender Selection -->
                 <TextView
-                    android:id="@+id/genderHeading"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:text="@string/select_gender_heading"
-                    android:layout_marginHorizontal="15dp"
-                    android:layout_marginTop="15dp"
-                    android:textSize="16sp"/>
-
-                <!-- Radio group code -->
-                <RadioGroup
-                    android:id="@+id/genderRadioGroup"
+                    android:id="@+id/radioButtonErrorTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="15dp"
+                    android:layout_marginTop="2dp"
+                    android:textAlignment="viewStart"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:textSize="13sp" />
+
+                <!-- TextInputLayout for Password input field -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/passwordLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/password_hint"
+                    app:boxBackgroundColor="@android:color/white"
+                    app:endIconMode="password_toggle"
+                    app:errorEnabled="true"
+                    app:errorIconDrawable="@null">
+
+                    <!-- TextInputEditText for entering email address -->
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:textColor="@color/black" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- TextInputLayout for Confirm Password input field -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/confirmPasswordLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/confirm_password_hint"
+                    app:boxBackgroundColor="@android:color/white"
+                    app:endIconMode="password_toggle"
+                    app:errorEnabled="true"
+                    app:errorIconDrawable="@null">
+
+                    <!-- TextInputEditText for entering email address -->
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/confirmPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:textColor="@color/black" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- For the Check Box -->
+                <CheckBox
+                    android:id="@+id/termsCheckbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:text="@string/checkbox_text" />
+
+                <!-- Textview for the error in the CheckBox Selection -->
+                <TextView
+                    android:id="@+id/agreeTermsErrorTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="15dp"
+                    android:textAlignment="viewStart"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:textSize="13sp" />
+
+                <!-- Button for submitting the registration form -->
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnRegister"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/register_button_background"
+                    android:text="@string/registration_heading_text"
+                    android:textColor="@color/white" />
+
+                <!-- TextView for the Register info -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="20dp"
+                    android:gravity="center"
                     android:orientation="horizontal">
 
-                    <RadioButton
-                        android:id="@+id/maleRadioButton"
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:checked="false"
-                        android:text="Male"
-                        app:buttonTint="@android:color/holo_orange_dark" />
+                        android:text="@string/already_registered"
+                        android:textSize="15sp" />
 
-                    <RadioButton
-                        android:id="@+id/femaleRadioButton"
+                    <TextView
+                        android:id="@+id/goToLogin"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:checked="false"
-                        android:text="female"
-                        app:buttonTint="@android:color/holo_orange_dark" />
+                        android:layout_marginStart="4dp"
+                        android:text="@string/login_here"
+                        android:textColor="@android:color/holo_orange_dark"
+                        android:textSize="15sp" />
 
-                    <RadioButton
-                        android:id="@+id/othersRadioButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:checked="false"
-                        android:text="Others"
-                        app:buttonTint="@android:color/holo_orange_dark" />
-
-                </RadioGroup>
+                </LinearLayout>
 
             </LinearLayout>
 
-            <!-- Added this view for the bottom of the Gender Selection -->
-            <View
-                android:id="@+id/genderRadioGroupBottomView"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@android:color/darker_gray" />
-
-            <!-- Textview for the error in the Gender Selection -->
-            <TextView
-                android:id="@+id/radioButtonErrorTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="15dp"
-                android:layout_marginTop="2dp"
-                android:textAlignment="viewStart"
-                android:textColor="@android:color/holo_red_dark"
-                android:textSize="13sp" />
-
-            <!-- TextInputLayout for Password input field -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/passwordLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/password_hint"
-                app:boxBackgroundColor="@android:color/white"
-                app:endIconMode="password_toggle"
-                app:errorEnabled="true"
-                app:errorIconDrawable="@null"
-                >
-
-                <!-- TextInputEditText for entering email address -->
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPassword"
-                    android:textColor="@color/black" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- TextInputLayout for Confirm Password input field -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/confirmPasswordLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/confirm_password_hint"
-                app:boxBackgroundColor="@android:color/white"
-                app:endIconMode="password_toggle"
-                app:errorEnabled="true"
-                app:errorIconDrawable="@null">
-
-                <!-- TextInputEditText for entering email address -->
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/confirmPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPassword"
-                    android:textColor="@color/black" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- For the Check Box -->
-            <CheckBox
-                android:id="@+id/termsCheckbox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="6dp"
-                android:text="@string/checkbox_text" />
-
-            <!-- Textview for the error in the CheckBox Selection -->
-            <TextView
-                android:id="@+id/agreeTermsErrorTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="15dp"
-                android:textAlignment="viewStart"
-                android:textColor="@android:color/holo_red_dark"
-                android:textSize="13sp" />
-
-            <!-- Button for submitting the registration form -->
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnRegister"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/register_button_background"
-                android:text="@string/registration_heading_text"
-                android:textColor="@color/white" />
-
         </LinearLayout>
 
-    </LinearLayout>
+    </ScrollView>
 
-</ScrollView>
+</LinearLayout>
+
+

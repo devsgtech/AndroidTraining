@@ -2,17 +2,25 @@ package com.example.firstandroidapp;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import android.view.View;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+
 public class DataBaseHandler extends SQLiteOpenHelper {
 
     static final String DATABASE_NAME = "user.db";
     static final int DATABASE_VERSION = 1;
     final String TAG = "DataBaseHandler";
+
+    // Shared Preference
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
     private static final String TABLE_USER = "user";
     private static final String COLUMN_ID = "id";
@@ -29,6 +37,10 @@ public class DataBaseHandler extends SQLiteOpenHelper {
 
     public DataBaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+
+        // Initializing the shared preference and editor
+        sharedPreferences = context.getSharedPreferences(Utility.saveDetailsFilename, Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
     }
 
     @Override
@@ -46,6 +58,8 @@ public class DataBaseHandler extends SQLiteOpenHelper {
                 + CONFIRM_PASSWORD + " TEXT NOT NULL,"
                 + TERMS_AGREEMENT + " INTEGER NOT NULL" + ")";
         db.execSQL(CREATE_USER_TABLE);
+
+
     }
 
     @Override
@@ -151,6 +165,59 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         return false;
     }
 
+    // Method to check the Login details are valid.
+    public boolean isLoginDetailValid(String enteredEmail, String enteredPassword) {
+        SQLiteDatabase db = null;
+        Cursor c = null;
 
+        // Try-catch block for handling potential exceptions and ensuring smooth functioning
+        try {
+            // Getting a readable instance of the database
+            db = this.getReadableDatabase();
+
+            // SQL query to check if there is a user with the provided email and password
+            String query = "SELECT * FROM " + TABLE_USER + " WHERE " + COLUMN_EMAIL + " =?" + " AND " + PASSWORD + " =?" ;
+
+            // Executing the query with the provided email and password
+            c = db.rawQuery(query, new String[]{enteredEmail, enteredPassword});
+
+            // If the cursor has more than 0 rows, it means the email and password match a record in the database
+            if (c.getCount() > 0 && c.moveToFirst()) {
+
+                for (int i= 1;i<8;i++) Log.d(TAG, "cursor value for " + i +" on the save = " + c.getString(i) );
+
+                // Save the data to the shared preference file.
+                editor.putString(Utility.firstNameKey, c.getString(1));
+                editor.putString(Utility.lastNameKey, c.getString(2));
+                editor.putString(Utility.emailAddressKey, c.getString(3));
+                editor.putString(Utility.contactNumberKey, c.getString(4));
+                editor.putString(Utility.dateOfBirthKey, c.getString(5));
+                editor.putString(Utility.countryKey, c.getString(6));
+                editor.putString(Utility.genderKey, c.getString(7));
+                editor.commit();
+
+                return true;
+            }
+
+
+
+        } catch (Exception e) {
+            // Logging any exceptions that occur during the process
+            Log.d(TAG, "loginDetailsMatcher: exception" + e);
+        } finally {
+            // Closing the cursor if it is not null
+            if (c != null) {
+                c.close();
+            }
+
+            // Closing the database if it is not null and is open
+            if (db != null && db.isOpen()) {
+                db.close();
+            }
+        }
+
+        // Returning false if the email and password do not match any record
+        return false;
+    }
 
 }

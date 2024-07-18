@@ -32,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="Successfully registered"
+        android:text="Successfully Logged In"
         android:textAlignment="center"
         android:textSize="25sp"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -45,7 +45,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
         android:orientation="vertical"
-        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/registeredText">
@@ -58,6 +57,7 @@
             android:textColor="@color/black"
             android:textSize="25sp" />
 
+        <!-- EMAIL ADDRESS -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
             <TextView
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
-                android:text="Email Address -"
+                android:text="@string/email_address"
                 android:textSize="20sp" />
 
             <TextView
@@ -80,6 +80,7 @@
 
         </LinearLayout>
 
+        <!-- GENDER -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -89,7 +90,7 @@
             <TextView
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
-                android:text="Gender -"
+                android:text="@string/gender"
                 android:textSize="20sp" />
 
             <TextView
@@ -102,6 +103,7 @@
 
         </LinearLayout>
 
+        <!-- COUNTRY -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -111,7 +113,7 @@
             <TextView
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
-                android:text="Country -"
+                android:text="@string/country"
                 android:textSize="20sp" />
 
             <TextView
@@ -123,6 +125,53 @@
                 android:textSize="20sp" />
 
         </LinearLayout>
+
+        <!-- DATE OF BIRTH -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:text="@string/date_of_birth"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/dateOfBirthView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ABCDEFGH"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+        <!-- CONTACT NUMBER -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:text="@string/contact_number"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/contactNumberView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ABCDEFGH"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
 
 
     </LinearLayout>

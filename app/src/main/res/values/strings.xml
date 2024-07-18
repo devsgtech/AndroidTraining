@@ -1,29 +1,32 @@
 <resources>
     <!-- Application name -->
-    <string name="app_name">SeventhAndroidTask</string>
+    <string name="app_name">NinthAndroidTask</string>
 
     <!-- Registration page heading -->
     <string name="registration_heading_text">Register</string>
+    <string name="login_heading_text">Login</string>
     <string name="logout_button_text">LOGOUT</string>
     <string name="registration_subheading_text">Create your new account</string>
+    <string name="login_subheading_text">Welcome back user</string>
 
     <!-- Heading of the input fields -->
-    <string name="first_name_hint">First Name</string>
+    <string name="first_name_hint">First Name*</string>
     <string name="last_name_hint">Last Name</string>
-    <string name="email_address_hint">Email Address</string>
+    <string name="email_address_hint">Email Address*</string>
     <string name="contact_number_hint">Contact Number</string>
     <string name="date_of_birth_hint">Date Of Birth</string>
-    <string name="select_gender_heading">Select Gender</string>
-    <string name="password_hint">Password</string>
-    <string name="confirm_password_hint">Confirm Password</string>
+    <string name="select_gender_heading">Select Gender*</string>
+    <string name="password_hint">Password*</string>
+    <string name="confirm_password_hint">Confirm Password*</string>
 
     <!-- General Text -->
-    <string name="checkbox_text">I agree to the terms and conditions.</string>
+    <string name="checkbox_text">I agree to the terms and conditions*</string>
 
     <!-- Error message for gender selection validation -->
     <string name="first_name_required">First name is required</string>
     <string name="email_required">Email is required</string>
     <string name="email_valid_required">Please enter a valid email address</string>
+    <string name="password_valid_required">Please enter a valid password</string>
     <string name="gender_selection">Gender is required</string>
     <string name="password_required">Password is required</string>
     <string name="confirm_password_required">Confirm password is required</string>
@@ -31,6 +34,15 @@
     <string name="agree_terms">Please agree to the Terms and Conditions</string>
     <string name="email_already_exists">User is already associated to this email.</string>
     <string name="registered_successfully">Registered Successfully.</string>
+    <string name="register_here"> Register here</string>
+    <string name="new_to_this_app">Don\'t have account ?</string>
+    <string name="already_registered">Already Registered ?</string>
+    <string name="login_here">Login here</string>
+    <string name="contact_number">Contact -</string>
+    <string name="date_of_birth">Date Of Birth -</string>
+    <string name="country">Country -</string>
+    <string name="gender">Gender -</string>
+    <string name="email_address">Email Address -</string>
 
 
     <!-- Array of country names for the spinner -->
