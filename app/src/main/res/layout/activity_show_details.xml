@@ -105,6 +105,7 @@
 
         <!-- COUNTRY -->
         <LinearLayout
+            android:id="@+id/countryLL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -128,6 +129,7 @@
 
         <!-- DATE OF BIRTH -->
         <LinearLayout
+            android:id="@+id/dateOfBirthLL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -151,6 +153,7 @@
 
         <!-- CONTACT NUMBER -->
         <LinearLayout
+            android:id="@+id/contactLL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -187,7 +190,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:background="@drawable/logout_button_background"
         android:text="@string/logout_button_text"
-        android:visibility="gone"
         android:textColor="@color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
