@@ -1,6 +1,9 @@
 package com.example.firstandroidapp;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -24,6 +27,7 @@ public class Utility {
     public static final String genderKey = "gender_selection_key";
     public static final String dateOfBirthKey = "date_of_birth_key";
     public static final String contactNumberKey = "contact_number_key";
+    public static final String isUserLoggedInKey = "is_user_logged_in_key";
 
 
     // Method to display a Snackbar for success messages
@@ -114,5 +118,9 @@ public class Utility {
         }
         return sb.toString();
     }
+
+
+
+
 
 }

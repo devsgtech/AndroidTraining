@@ -21,6 +21,8 @@
 
     <!-- General Text -->
     <string name="checkbox_text">I agree to the terms and conditions*</string>
+    <string name="dialog_box_title">Confirmation !</string>
+    <string name="dialog_box_message">Are you sure you want to logout ?</string>
 
     <!-- Error message for gender selection validation -->
     <string name="first_name_required">First name is required</string>

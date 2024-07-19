@@ -1,4 +1,5 @@
 package com.example.firstandroidapp;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,8 +13,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+
 import java.security.NoSuchAlgorithmException;
 
 public class LoginPage extends AppCompatActivity {
@@ -23,7 +26,7 @@ public class LoginPage extends AppCompatActivity {
     private TextView goToRegister;
     private Button btnLogin;
     private String hashedPassword;
-    private boolean isValid,proceedTheValidations = true;
+    private boolean isValid, proceedTheValidations = true;
     private DataBaseHandler dataBaseHandler;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
@@ -33,9 +36,12 @@ public class LoginPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_page);
+
         init();
+        isUserLoggedIn();
         textWatcher();
         buttonClicked();
+        isUserLoggedIn();
     }
 
     @Override
@@ -44,7 +50,15 @@ public class LoginPage extends AppCompatActivity {
         dataBaseHandler.getAllUsers();
     }
 
-    private void init(){
+    private void isUserLoggedIn() {
+        if (sharedPreferences.getBoolean(Utility.isUserLoggedInKey, false)) {
+            Intent i = new Intent(LoginPage.this, ShowDetails.class);
+            startActivity(i);
+            finish();
+        }
+    }
+
+    private void init() {
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
         emailLayout = findViewById(R.id.emailLayout);
@@ -52,46 +66,51 @@ public class LoginPage extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         goToRegister = findViewById(R.id.goToRegister);
         dataBaseHandler = new DataBaseHandler(LoginPage.this);
-
-
+        sharedPreferences = getSharedPreferences("login_details", MODE_PRIVATE);
+        editor = sharedPreferences.edit();
     }
 
-    private void buttonClicked(){
+    private void buttonClicked() {
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 proceedTheValidations = false;
-                if (validInput()){
+                if (validInput()) {
                     try {
                         hashedPassword = Utility.passwordHashing(password.getText().toString().trim());
                     } catch (NoSuchAlgorithmException e) {
                         throw new RuntimeException(e);
                     }
-                    if(dataBaseHandler.isLoginDetailValid(email.getText().toString().trim().toLowerCase(),hashedPassword)){
+                    if (dataBaseHandler.isLoginDetailValid(email.getText().toString().trim().toLowerCase(), hashedPassword)) {
                         clearValues();
+                        editor.putBoolean(Utility.isUserLoggedInKey, true);
+                        editor.commit();
                         Intent i = new Intent(LoginPage.this, ShowDetails.class);
                         startActivity(i);
-                    }else{
-                        Utility.displayErrorSnackbar(v, "Entered email or password is wrong",LoginPage.this);
+                        finish();
+                    } else {
+                        Utility.displayErrorSnackbar(v, "Entered email or password is wrong", LoginPage.this);
                     }
                 }
                 proceedTheValidations = true;
             }
         });
+
         goToRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 proceedTheValidations = false;
                 clearValues();
                 proceedTheValidations = true;
-                Intent i = new Intent(LoginPage.this,RegisterPage.class);
+                Intent i = new Intent(LoginPage.this, RegisterPage.class);
                 startActivity(i);
 
             }
         });
     }
 
-    private boolean validInput(){
+    private boolean validInput() {
 
         // Check for email address.
         if (email.getText().toString().isEmpty()) {
@@ -114,7 +133,7 @@ public class LoginPage extends AppCompatActivity {
         return isValid;
     }
 
-    private void textWatcher(){
+    private void textWatcher() {
         email.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -122,7 +141,7 @@ public class LoginPage extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    emailLayout.setError(null);
+                emailLayout.setError(null);
             }
 
             @Override
@@ -157,22 +176,9 @@ public class LoginPage extends AppCompatActivity {
         });
     }
 
-    private void clearValues(){
+    private void clearValues() {
         email.setText("");
-
         password.setText("");
-    }
-
-    private void saveDataToSharedPreference(){
-
-
-        // Save first name, last name, and email to shared preferences
-
-
-        // Log the saved data for debugging purposes
-        Log.d(TAG, "savedData " + sharedPreferences.getString(Utility.firstNameKey, "") + " " + sharedPreferences.getString(Utility.lastNameKey, "") + " " + sharedPreferences.getString(Utility.emailAddressKey, "") + " " + sharedPreferences.getString(Utility.countryKey, "") + " " + sharedPreferences.getString(Utility.genderKey, ""));
-
-
     }
 
 }
