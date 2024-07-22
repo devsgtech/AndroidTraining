@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -66,7 +67,8 @@ public class ProfilePage extends AppCompatActivity {
     private String passwordToBeSaved;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
-
+    private ImageView uploadImage, profileImageView;
+    int SELECT_PICTURE = 200;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,6 +159,8 @@ public class ProfilePage extends AppCompatActivity {
         dateSelection = findViewById(R.id.dateSelection);
         dateSelectionLayout = findViewById(R.id.dateSelectionLayout);
         dataBaseHandler = new DataBaseHandler(ProfilePage.this);
+        uploadImage = findViewById(R.id.uploadImage);
+        profileImageView = findViewById(R.id.profileImageView);
 
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -234,12 +238,14 @@ public class ProfilePage extends AppCompatActivity {
 
     // Method to set up onClick listener on the Update button
     private void buttonClick() {
+
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 customAlertDialogBoxCreationForUpdation(view);
             }
         });
+
     }
 
     private void showPasswordFields() {
@@ -488,7 +494,7 @@ public class ProfilePage extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(ProfilePage.this);
 
         // Set the message show for the Alert time
-        builder.setMessage("Are you sure you want to update the values ?");
+        builder.setMessage(R.string.are_you_sure_you_want_to_update_the_values);
 
         // Set Alert Title
         builder.setTitle(getString(R.string.dialog_box_title));
@@ -496,14 +502,14 @@ public class ProfilePage extends AppCompatActivity {
         // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
         builder.setCancelable(false);
 
-        builder.setPositiveButton("Yes", (DialogInterface.OnClickListener) (dialog, which) -> {
+        builder.setPositiveButton(R.string.yes, (DialogInterface.OnClickListener) (dialog, which) -> {
             // saving the data.
             if(validDataInputs(view)){
                 saveData(view);
             }
         });
 
-        builder.setNegativeButton("No", (DialogInterface.OnClickListener) (dialog, which) -> {
+        builder.setNegativeButton(R.string.no, (DialogInterface.OnClickListener) (dialog, which) -> {
             // If user click no then dialog box is canceled.
             dialog.cancel();
         });
@@ -530,7 +536,7 @@ public class ProfilePage extends AppCompatActivity {
         builder.setCancelable(false);
 
         // Set the positive button with yes name Lambda OnClickListener method is use of DialogInterface interface.
-        builder.setPositiveButton("Yes", (DialogInterface.OnClickListener) (dialog, which) -> {
+        builder.setPositiveButton(R.string.yes, (DialogInterface.OnClickListener) (dialog, which) -> {
             // When the user click yes button the activity will be finished and the the values of the shared preference will be cleared.
             editor.clear();
             editor.apply();
@@ -541,7 +547,7 @@ public class ProfilePage extends AppCompatActivity {
         });
 
         // Set the Negative button with No name Lambda OnClickListener method is use of DialogInterface interface.
-        builder.setNegativeButton("No", (DialogInterface.OnClickListener) (dialog, which) -> {
+        builder.setNegativeButton(R.string.no, (DialogInterface.OnClickListener) (dialog, which) -> {
             // If user click no then dialog box is canceled.
             dialog.cancel();
         });
