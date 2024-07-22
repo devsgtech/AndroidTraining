@@ -49,25 +49,39 @@
             android:background="@android:color/white"
             android:orientation="vertical">
 
-            <!-- TextView for the "Register" title -->
-            <TextView
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/registration_heading_text"
-                android:textAlignment="center"
-                android:textColor="@android:color/black"
-                android:textSize="30sp"
-                android:textStyle="bold" />
+                android:layout_marginVertical="20dp"
+                >
+                <ImageView
+                    android:id="@+id/profileImageView"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:background="@drawable/image_view"
+                    android:layout_gravity="center"
+                    android:src="@drawable/profile_pic"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
 
-            <!-- TextView for additional registration text -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="38dp"
-                android:layout_marginEnd="48dp"
-                android:text="@string/registration_subheading_text"
-                android:textAlignment="center"
-                android:textSize="14sp" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintRight_toRightOf="@+id/profileImageView"
+                    app:layout_constraintBottom_toBottomOf="@+id/profileImageView"
+                    app:layout_constraintLeft_toLeftOf="@+id/profileImageView"
+                    app:layout_constraintTop_toTopOf="@+id/profileImageView"
+                    app:layout_constraintVertical_bias="0.93"
+                    app:layout_constraintHorizontal_bias="0.93"
+                    android:src="@drawable/baseline_add_a_photo_24"
+                    />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
             <!-- Container LinearLayout for the input fields and register button -->
@@ -128,10 +142,12 @@
                     <!-- TextInputEditText for entering email address -->
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/email"
+                        android:text="abc@gmail.com"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textEmailAddress"
-                        android:textColor="@color/black" />
+                        android:enabled="false"
+                        android:textColor="@android:color/darker_gray" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- TextInputLayout for contact number input field -->
@@ -267,6 +283,14 @@
                     android:textColor="@android:color/holo_red_dark"
                     android:textSize="13sp" />
 
+                <!-- For the Check Box -->
+                <CheckBox
+                    android:id="@+id/showPasswordCheckbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:text="@string/confirm_checkbox_text" />
+
                 <!-- TextInputLayout for Password input field -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/passwordLayout"
@@ -277,6 +301,7 @@
                     app:boxBackgroundColor="@android:color/white"
                     app:endIconMode="password_toggle"
                     app:errorEnabled="true"
+                    android:visibility="gone"
                     app:errorIconDrawable="@null">
 
                     <!-- TextInputEditText for entering email address -->
@@ -298,6 +323,7 @@
                     app:boxBackgroundColor="@android:color/white"
                     app:endIconMode="password_toggle"
                     app:errorEnabled="true"
+                    android:visibility="gone"
                     app:errorIconDrawable="@null">
 
                     <!-- TextInputEditText for entering email address -->
@@ -310,59 +336,17 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- For the Check Box -->
-                <CheckBox
-                    android:id="@+id/termsCheckbox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="6dp"
-                    android:text="@string/checkbox_text" />
-
-                <!-- Textview for the error in the CheckBox Selection -->
-                <TextView
-                    android:id="@+id/agreeTermsErrorTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="15dp"
-                    android:textAlignment="viewStart"
-                    android:textColor="@android:color/holo_red_dark"
-                    android:textSize="13sp" />
-
                 <!-- Button for submitting the registration form -->
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btnRegister"
+                    android:id="@+id/btnUpdate"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="20dp"
                     android:background="@drawable/register_button_background"
-                    android:text="@string/registration_heading_text"
+                    android:text="@string/update_text"
                     android:textColor="@color/white" />
 
-                <!-- TextView for the Register info -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="20dp"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/already_registered"
-                        android:textSize="15sp" />
-
-                    <TextView
-                        android:id="@+id/goToLogin"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
-                        android:text="@string/login_here"
-                        android:textColor="@android:color/holo_orange_dark"
-                        android:textSize="15sp" />
-
-                </LinearLayout>
 
             </LinearLayout>
 

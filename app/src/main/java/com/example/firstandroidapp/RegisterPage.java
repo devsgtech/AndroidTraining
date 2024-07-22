@@ -72,9 +72,9 @@ public class RegisterPage extends AppCompatActivity {
         setSupportActionBar(findViewById(R.id.my_toolbar));
         // Setting the title for the app bar
         getSupportActionBar().setTitle("Register");
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
         // Initialize views and widgets
         init();
         // Set up text change listeners for input validation

@@ -18,9 +18,11 @@
     <string name="select_gender_heading">Select Gender*</string>
     <string name="password_hint">Password*</string>
     <string name="confirm_password_hint">Confirm Password*</string>
+    <string name="update_text">Update</string>
 
     <!-- General Text -->
     <string name="checkbox_text">I agree to the terms and conditions*</string>
+    <string name="confirm_checkbox_text">Change password ?</string>
     <string name="dialog_box_title">Confirmation !</string>
     <string name="dialog_box_message">Are you sure you want to logout ?</string>
 

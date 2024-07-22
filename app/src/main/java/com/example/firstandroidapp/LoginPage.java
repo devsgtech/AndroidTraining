@@ -52,7 +52,7 @@ public class LoginPage extends AppCompatActivity {
 
     private void isUserLoggedIn() {
         if (sharedPreferences.getBoolean(Utility.isUserLoggedInKey, false)) {
-            Intent i = new Intent(LoginPage.this, ShowDetails.class);
+            Intent i = new Intent(LoginPage.this, ProfilePage.class);
             startActivity(i);
             finish();
         }
@@ -86,7 +86,7 @@ public class LoginPage extends AppCompatActivity {
                         clearValues();
                         editor.putBoolean(Utility.isUserLoggedInKey, true);
                         editor.commit();
-                        Intent i = new Intent(LoginPage.this, ShowDetails.class);
+                        Intent i = new Intent(LoginPage.this, ProfilePage.class);
                         startActivity(i);
                         finish();
                     } else {

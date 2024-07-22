@@ -220,4 +220,86 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         return false;
     }
 
+    // Method to update without password.
+    public void updateUserWithoutPassword(View v, Context context, String firstName, String lastName, String email, String contactNumber, String dateOfBirth, String country, String gender){
+        SQLiteDatabase db =null;
+        try {
+
+            //Initialising the DB.
+            db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_FIRST_NAME, firstName);
+            values.put(COLUMN_LAST_NAME, lastName);
+            values.put(CONTACT_NUMBER, contactNumber);
+            values.put(DATE_OF_BIRTH, dateOfBirth);
+            values.put(COUNTRY, country);
+            values.put(GENDER, gender);
+
+            // Defining the where clause
+            String whereClause = COLUMN_EMAIL + " = ?";
+            String[] whereArguement = {email};
+
+            int result = db.update(TABLE_USER,values,whereClause,whereArguement);
+
+            if(result>0){
+                Log.d(TAG, "User updated successfully with Email: " + email);
+                Utility.displaySuccessSnackbar(v, "User updated successfully.", context);
+            }else {
+                Log.e(TAG, "Failed to update user");
+                Utility.displayErrorSnackbar(v, "Failed to update user", context);
+            }
+
+        }catch (Exception e){
+            Log.e(TAG, "Error updating user", e);
+            Utility.displayErrorSnackbar(v, "Error updating user", context);
+        } finally {
+            // Closure of the DB.
+            if(db!=null && db.isOpen()){
+                db.close();
+            }
+        }
+    }
+
+    // Method to update with password.
+    public void updateUserWithPassword(View v, Context context, String firstName, String lastName, String email, String contactNumber, String dateOfBirth, String country, String gender, String password, String confirmPassword){
+        SQLiteDatabase db =null;
+        try {
+
+            //Initialising the DB.
+            db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_FIRST_NAME, firstName);
+            values.put(COLUMN_LAST_NAME, lastName);
+            values.put(CONTACT_NUMBER, contactNumber);
+            values.put(DATE_OF_BIRTH, dateOfBirth);
+            values.put(COUNTRY, country);
+            values.put(GENDER, gender);
+            values.put(PASSWORD, password);
+            values.put(CONFIRM_PASSWORD, confirmPassword);
+
+            // Defining the where clause
+            String whereClause = COLUMN_EMAIL + " = ?";
+            String[] whereArguement = {email};
+
+            int result = db.update(TABLE_USER,values,whereClause,whereArguement);
+
+            if(result>0){
+                Log.d(TAG, "User updated successfully with Email: " + email);
+                Utility.displaySuccessSnackbar(v, "User updated successfully.", context);
+            }else {
+                Log.e(TAG, "Failed to update user");
+                Utility.displayErrorSnackbar(v, "Failed to update user", context);
+            }
+
+        }catch (Exception e){
+            Log.e(TAG, "Error updating user", e);
+            Utility.displayErrorSnackbar(v, "Error updating user", context);
+        } finally {
+            // Closure of the DB.
+            if(db!=null && db.isOpen()){
+                db.close();
+            }
+        }
+    }
+
 }
